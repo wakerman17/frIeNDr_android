@@ -42,6 +42,7 @@ public class Index extends AppCompatActivity {
         startActivity(eventIntent);
     }
 
+
     public void toMyGroup(View view) {
         Intent groupChatIntent = new Intent(this, GroupChat.class);
         startActivity(groupChatIntent);

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.friendr">
 
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,11 +17,11 @@
         <activity android:name="android.friendr.view.FindNewGroup" />
         <activity android:name="android.friendr.view.Index"/>
         <activity android:name="android.friendr.view.RegisterActivity"/>
-        <activity android:name="android.friendr.view.LoginActivity" />
+        <activity android:name="android.friendr.view.WelcomeActivity" />
         <activity android:name="android.friendr.view.CreateEvent" />
         <activity android:name="android.friendr.view.GroupChat" />
         <activity android:name="android.friendr.view.EventChat" />
-        <activity android:name="android.friendr.view.WelcomeActivity" >
+        <activity android:name="android.friendr.view.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

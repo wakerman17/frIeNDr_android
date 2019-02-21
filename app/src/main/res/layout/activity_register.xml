@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/orange_gradient_1"
-    tools:context=".view.RegisterActivity">
+    tools:context=".RegisterActivity">
 
     <ScrollView
         android:id="@+id/scrollView7"
@@ -25,6 +25,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:text="Create a new account" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/regFullNameID"
                 android:layout_width="match_parent"
@@ -37,13 +45,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/regEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/reg_full_name" />
+                    android:inputType="textEmailAddress"
+                    android:hint="Email" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/regUsernameID"
+                android:id="@+id/regUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -55,13 +65,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/regFullNameID">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/regUsernameID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/reg_Username" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/regDobID"
+                android:id="@+id/regDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -72,6 +83,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/regUsernameID">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/regDobID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/reg_date_of_birth" />
@@ -133,7 +145,7 @@
                 app:layout_constraintTop_toTopOf="@+id/regVisibleInquiry" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/regPassword"
+                android:id="@+id/regPasswordID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -144,13 +156,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/checkBox">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/regPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/reg_password" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/regConfPW"
+                android:id="@+id/regConfPWID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -161,8 +175,10 @@
                 app:layout_constraintTop_toTopOf="@+id/regPassword">
 
                 <android.support.design.widget.TextInputEditText
+                    android:id="@+id/regConfPW"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/reg_confirm_password" />
             </android.support.design.widget.TextInputLayout>
 
