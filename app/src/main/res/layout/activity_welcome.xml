@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/friends_jumping"
+    tools:context=".view.WelcomeActivity">
+
+    <TextView
+        android:id="@+id/titleID"
+        android:layout_width="102dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="1dp"
+        android:text="@string/home_friendr"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/sloganID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sloganID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="300dp"
+        android:text="@string/home_slogan"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/signUpID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleID" />
+
+    <Button
+        android:id="@+id/signUpID"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:alpha="0.85"
+        android:text="@string/home_sign_up"
+        app:layout_constraintBottom_toTopOf="@+id/orTextID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sloganID" />
+
+
+    <TextView
+        android:id="@+id/orTextID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_or"
+        android:alpha="0.50"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/WCloginBtnID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpID" />
+
+    <Button
+        android:id="@+id/WCloginBtnID"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:alpha="0.85"
+        android:text="@string/home_log_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orTextID" />
+</android.support.constraint.ConstraintLayout>
