@@ -6,9 +6,7 @@ public class InterestProfile {
     private String interest;
     private int user_id;
 
-    public InterestProfile() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
-    }
+    public InterestProfile() {}
 
     public InterestProfile(int id, String interest, int user_id) {
         this.id = id;

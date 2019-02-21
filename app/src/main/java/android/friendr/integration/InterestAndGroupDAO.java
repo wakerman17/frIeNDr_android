@@ -14,8 +14,28 @@ public class InterestAndGroupDAO {
     private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     public void getUserInterest(final DatabaseReturner databaseReturner, int id) {
-        Query query = database.child("interest_profile").orderByChild("user_id").equalTo(id);
-        //Query query = myRef.orderByChild("user_id").equalTo("1");
+        getData(databaseReturner, id, "interest_profile");
+    }
+
+    public void getUserGroup(DatabaseReturner databaseReturner, int id) {
+        getData(databaseReturner, id, "group");
+    }
+
+    public void getInterestSearchResult(final DatabaseReturner databaseReturner, int id, String searchText){
+        Query query = database.child("interest").orderByChild("name").startAt(searchText);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    private void getData(final DatabaseReturner databaseReturner, int id, String table) {
+        Query query = database.child(table).orderByChild("user_id").equalTo(id);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
