@@ -5,17 +5,9 @@ import android.friendr.R;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class Index extends AppCompatActivity {
 
@@ -25,25 +17,6 @@ public class Index extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
-
-        FirebaseApp.initializeApp(this);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
-
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    final User user = postSnapshot.getValue(User.class);
-                    Log.d("d::::", user.getUsername());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        myRef.addListenerForSingleValueEvent(postListener);
 
         startClickListener(R.id.find_new_group, FindNewGroup.class);
         startClickListener(R.id.to_general_page, GroupMainPage.class);
