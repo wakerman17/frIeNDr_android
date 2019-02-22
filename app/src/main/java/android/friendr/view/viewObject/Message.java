@@ -1,4 +1,4 @@
-package android.friendr.model;
+package android.friendr.view.viewObject;
 
 public class Message {
     public String sender;
