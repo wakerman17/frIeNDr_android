@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/orange_gradient_1"
+    tools:context="android.friendr.view.EventList">
+
+    <Button
+        android:id="@+id/ev_create_event_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create a new event" />
+
+    <ScrollView
+        android:layout_below="@+id/ev_create_event_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ev_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

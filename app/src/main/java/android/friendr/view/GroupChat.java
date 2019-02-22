@@ -41,7 +41,7 @@ public class GroupChat extends AppCompatActivity {
 
     private EditText userMessageInput;
     private LinearLayout messageView;
-    Button btnSend, btnCreateEvent, btnFav;
+    Button btnSend, btnCreateEvent, btnFav, btnToLiveEvents;
     ScrollView mScrollView;
     String currentGroupName, currentUserID, currentUserName;
     String currentDate, currentTime;
@@ -65,13 +65,10 @@ public class GroupChat extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName);
-
+        GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Chat");
 
         initFields();
         getUserInfo();
-
-
 
 
 
@@ -91,12 +88,22 @@ public class GroupChat extends AppCompatActivity {
             }
         });
 
+        btnToLiveEvents.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent nextWindow = new Intent(GroupChat.this, EventList.class);
+                startActivity(nextWindow);
+            }
+        });
+
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
+        getUserInfo();
 
         GroupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -131,6 +138,37 @@ public class GroupChat extends AppCompatActivity {
     }
 
 
+    private void getUserInfo() {
+        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    //System.out.println(">>> Datasnap " + dataSnapshot.child("username").getValue());
+                    currentUserName = dataSnapshot.child("username").getValue().toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+    private void initFields() {
+        btnSend = findViewById(R.id.gr_send_button);
+        btnCreateEvent = findViewById(R.id.gr_create_ev_button);
+        btnFav = findViewById(R.id.gr_fav_button);
+        btnToLiveEvents = findViewById(R.id.gr_to_live_events);
+        messageView = findViewById(R.id.gr_message_view);
+        userMessageInput = findViewById(R.id.gr_input_message);
+        mScrollView = findViewById(R.id.gr_scroll_view);
+    }
+
+
+
     private void SaveMessageToDatabase() {
         String txt_message = userMessageInput.getText().toString();
         String messageKey = GroupNameRef.push().getKey();
@@ -160,35 +198,6 @@ public class GroupChat extends AppCompatActivity {
             GroupMessageKeyRef.updateChildren(messageInfoMap);
         }
     }
-
-    private void getUserInfo() {
-        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    currentUserName = dataSnapshot.child("username").getValue().toString();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void initFields() {
-        btnSend = findViewById(R.id.gr_send_button);
-        btnCreateEvent = findViewById(R.id.gr_create_ev_button);
-        btnFav = findViewById(R.id.gr_fav_button);
-        messageView = findViewById(R.id.gr_message_view);
-        userMessageInput = findViewById(R.id.gr_input_message);
-        mScrollView = findViewById(R.id.gr_scroll_view);
-    }
-
-
-
 
 
 
@@ -230,7 +239,6 @@ public class GroupChat extends AppCompatActivity {
             t.setText(message);
             messageView.addView(my_message);
             //my_message.requestFocus();
-
         } else {
             RelativeLayout their_message = (RelativeLayout) LayoutInflater.from(GroupChat.this).inflate(R.layout.their_message, null);
             TextView name = (TextView) their_message.getChildAt(1);

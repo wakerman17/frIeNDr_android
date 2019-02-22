@@ -21,15 +21,13 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:hint="Event title"
-                android:ems="10"
-                android:id="@+id/title"/>
+                android:id="@+id/ev_title"/>
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:hint="Event description"
-                android:ems="10"
-                android:id="@+id/description"/>
+                android:id="@+id/ev_description"/>
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,23 +35,16 @@
                 android:focusable="false"
                 android:clickable="true"
                 android:longClickable="false"
-                android:ems="10"
-                android:id="@+id/event_date"
+                android:id="@+id/ev_date"
                 android:hint="Event date"/>
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/maxAttendees" android:hint="Max number of attendees"/>
+                android:id="@+id/ev_max" android:hint="Max number of attendees"/>
         <Button
                 android:text="Save"
                 android:layout_width="match_parent"
-                android:onClick="createEvent"
-                android:layout_height="wrap_content" android:id="@+id/button"/>
-        <Button
-                android:text="Reset"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/button2"/>
+                android:layout_height="wrap_content" android:id="@+id/ev_save_button"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

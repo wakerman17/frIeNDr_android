@@ -8,11 +8,17 @@
         android:layout_height="match_parent"
         android:background="@drawable/orange_gradient_1"
         tools:context=".view.GroupChat"
-
     >
+
+    <Button
+        android:id="@+id/gr_to_live_events"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="To Live Events" />
 
     <ScrollView
         android:id="@+id/gr_scroll_view"
+        android:layout_below="@+id/gr_to_live_events"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/footer"
@@ -39,25 +45,26 @@
             android:id="@+id/gr_create_ev_button"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_add" />
+            android:background="@drawable/ico_create_group" />
         <Button
             android:id="@+id/gr_fav_button"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_view" />
+            android:background="@drawable/ico_bookmark" />
         <EditText
             android:id="@+id/gr_input_message"
+            android:shadowColor="#1a3b99"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
+            android:backgroundTint="#1a3b99"
             android:hint="Your message here..."
             android:inputType="textMultiLine" />
         <Button
             android:id="@+id/gr_send_button"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_send" />
+            android:background="@drawable/ico_send_msg" />
 
     </LinearLayout>
 

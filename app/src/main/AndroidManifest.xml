@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.friendr">
 
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,17 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="android.friendr.view.FindNewInterest"/>
-        <activity android:name="android.friendr.view.GroupMainPage" />
-        <activity android:name="android.friendr.view.CreateGroup" />
-        <activity android:name="android.friendr.view.FindNewGroup" />
-        <activity android:name="android.friendr.view.Index"/>
-        <activity android:name="android.friendr.view.RegisterActivity"/>
-        <activity android:name="android.friendr.view.WelcomeActivity" />
-        <activity android:name="android.friendr.view.CreateEvent" />
-        <activity android:name="android.friendr.view.GroupChat" />
-        <activity android:name="android.friendr.view.EventChat" />
-        <activity android:name="android.friendr.view.LoginActivity" >
+        <activity android:name=".view.EventList"></activity>
+        <activity android:name=".view.FindNewInterest" />
+        <activity android:name=".view.GroupMainPage" />
+        <activity android:name=".view.CreateGroup" />
+        <activity android:name=".view.FindNewGroup" />
+        <activity android:name=".view.Index" />
+        <activity android:name=".view.RegisterActivity" />
+        <activity android:name=".view.WelcomeActivity" />
+        <activity android:name=".view.CreateEvent" />
+        <activity android:name=".view.GroupChat" />
+        <activity android:name=".view.EventChat" />
+        <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
