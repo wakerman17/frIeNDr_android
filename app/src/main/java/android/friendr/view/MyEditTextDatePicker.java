@@ -14,7 +14,7 @@ public class MyEditTextDatePicker  implements View.OnClickListener, DatePickerDi
     EditText _editText;
     private int _day;
     private int _month;
-    private int _birthYear;
+    private int _Year;
     private Context _context;
 
     public MyEditTextDatePicker(Context context, int editTextViewID)
@@ -27,7 +27,7 @@ public class MyEditTextDatePicker  implements View.OnClickListener, DatePickerDi
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        _birthYear = year;
+        _Year = year;
         _month = monthOfYear;
         _day = dayOfMonth;
         updateDisplay();
@@ -48,6 +48,6 @@ public class MyEditTextDatePicker  implements View.OnClickListener, DatePickerDi
 
         _editText.setText(new StringBuilder()
                 // Month is 0 based so add 1
-                .append(_day).append("/").append(_month + 1).append("/").append(_birthYear).append(" "));
+                .append(_Year).append("/").append(_month + 1).append("/").append(_day).append(" "));
     }
 }

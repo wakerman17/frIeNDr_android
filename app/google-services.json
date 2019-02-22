@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "356912005950-olcjq3dql7oveb54qrmjhj9n9um31eci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.frindr",
+            "certificate_hash": "7900c70b53cba6528a80c02ecba28c5a70651abe"
+          }
+        },
+        {
           "client_id": "356912005950-l528u6m1dccvgn11pi6l1peskb8ij0qe.apps.googleusercontent.com",
           "client_type": 3
         }
