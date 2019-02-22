@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.friendr.controller.Controller;
 import android.friendr.R;
 import android.friendr.integration.DatabaseReturner;
+import android.friendr.view.viewObject.Group;
+import android.friendr.view.viewObject.InterestProfile;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import java.util.ArrayList;
 
 public class Index extends AppCompatActivity {
 
-    LinearLayout groupGoto1;
     int userID = 1;
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
 
@@ -98,9 +99,6 @@ public class Index extends AppCompatActivity {
             }
         }, userID);
         startClickListener(R.id.find_new_group, FindNewGroup.class);
-
-
-        groupGoto1 = findViewById(R.id.group_goto_1);
     }
 
     private void startClickListener(@IdRes int id, final java.lang.Class newWindowClass) {

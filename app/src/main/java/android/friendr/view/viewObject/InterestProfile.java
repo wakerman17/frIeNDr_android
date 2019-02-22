@@ -1,4 +1,4 @@
-package android.friendr.view;
+package android.friendr.view.viewObject;
 
 public class InterestProfile {
 
@@ -14,7 +14,7 @@ public class InterestProfile {
         this.user_id = user_id;
     }
 
-    String getInterest() {
+    public String getInterest() {
         return interest;
     }
 }

@@ -2,6 +2,7 @@ package android.friendr.view;
 
 import android.content.Intent;
 import android.friendr.R;
+import android.friendr.view.viewObject.Group;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
