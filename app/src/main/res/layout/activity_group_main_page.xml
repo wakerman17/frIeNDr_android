@@ -21,17 +21,15 @@
         app:layout_constraintVertical_bias="0.027">
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mobile gaming group"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/group_description"
             android:layout_width="374dp"
-            android:layout_height="wrap_content"
-            android:text="A group with people that like mobile gaming" />
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/create_event_button"
