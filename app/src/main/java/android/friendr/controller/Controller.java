@@ -18,4 +18,8 @@ public class Controller {
     public void getInterestSearchResult(DatabaseReturner databaseReturner, int id, String searchText){
         interestAndGroupDAO.getInterestSearchResult(databaseReturner, id, searchText);
     }
+
+    public void getGroupSearchResult(DatabaseReturner databaseReturner, int id, String searchText){
+        interestAndGroupDAO.getGroupSearchResult(databaseReturner, id, searchText);
+    }
 }

@@ -22,7 +22,20 @@ public class InterestAndGroupDAO {
     }
 
     public void getInterestSearchResult(final DatabaseReturner databaseReturner, int id, String searchText){
-        Query query = database.child("interest").orderByChild("name").startAt(searchText);
+        Query query = database.child("interest").orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    public void getGroupSearchResult(final DatabaseReturner databaseReturner, int id, String searchText) {
+        Query query = database.child("group").orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
