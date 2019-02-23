@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.EventList"></activity>
+        <activity android:name=".view.EventList"/>
         <activity android:name=".view.FindNewInterest" />
         <activity android:name=".view.GroupMainPage" />
         <activity android:name=".view.CreateGroup" />
         <activity android:name=".view.FindNewGroup" />
         <activity android:name=".view.Index" />
         <activity android:name=".view.RegisterActivity" />
-        <activity android:name=".view.WelcomeActivity" />
+        <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.CreateEvent" />
         <activity android:name=".view.GroupChat" />
         <activity android:name=".view.EventChat" />
-        <activity android:name=".view.LoginActivity">
+        <activity android:name=".view.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
