@@ -2,6 +2,7 @@ package android.friendr.view;
 
 import android.content.Intent;
 import android.friendr.R;
+import android.friendr.view.viewObject.Group;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -85,8 +86,10 @@ public class GroupChat extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                Intent nextWindow = new Intent(GroupChat.this, EventList.class);
-                startActivity(nextWindow);
+                Intent intent = new Intent(GroupChat.this, EventList.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -216,6 +219,7 @@ public class GroupChat extends AppCompatActivity {
             String chatUsername = (String) ((DataSnapshot) iterator.next()).getValue();
 
             displayMessage(chatDate, chatTime, chatUsername, chatMessage);
+
 
             mScrollView.post(new Runnable() {
                 public void run() {
