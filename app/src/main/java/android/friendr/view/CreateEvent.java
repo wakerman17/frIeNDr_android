@@ -2,7 +2,7 @@ package android.friendr.view;
 
 import android.content.Intent;
 import android.friendr.R;
-import android.friendr.model.Event;
+import android.friendr.view.viewObject.Event;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.support.annotation.NonNull;

@@ -1,4 +1,4 @@
-package android.friendr.model;
+package android.friendr.view.viewObject;
 
 import android.text.Editable;
 

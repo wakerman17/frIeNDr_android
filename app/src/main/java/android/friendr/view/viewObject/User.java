@@ -1,12 +1,10 @@
-package android.friendr.model;
+package android.friendr.view.viewObject;
 
 public class User {
 
     private String username, email, imageURL;
 
-    public User() {
-        // Default constructor required for calls to DataSnapshot.getValue(User.class)
-    }
+    public User() {}
 
     public User(String username) {
         this.username = username;
