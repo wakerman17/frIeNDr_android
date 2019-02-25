@@ -15,13 +15,13 @@
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/interest"
+        app:layout_constraintBottom_toTopOf="@+id/interest_spinner"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="0dp" />
 
     <Spinner
-        android:id="@+id/interest"
+        android:id="@+id/interest_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/group_name"
