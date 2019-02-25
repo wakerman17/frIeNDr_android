@@ -39,7 +39,7 @@ public class FindNewGroup extends AppCompatActivity {
     SearchView searchView;
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
     String currentUserID;
-    HashSet<String> groupNamesForUser;
+    HashSet<String> groupNamesForUser, interestNamesForUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,7 @@ public class FindNewGroup extends AppCompatActivity {
         if (null != intent) {
             currentUserID = (String) intent.getSerializableExtra("currentUserID");
             groupNamesForUser = (HashSet<String>) intent.getSerializableExtra("groupNamesForUser");
+            interestNamesForUser = (HashSet<String>) intent.getSerializableExtra("interestNamesForUser");
         }
 
         groupResult = findViewById(R.id.group_result);
@@ -113,7 +114,7 @@ public class FindNewGroup extends AppCompatActivity {
                                     final Group group = postSnapshot.getValue(Group.class);
                                     if(groupNamesForUser.contains(group.getName())) {
                                         continue;
-                                    } else if (noSpecificInterest) {
+                                    } else if ((noSpecificInterest && interestNamesForUser.contains(group.getInterest_base())) || interestNamesForUser.contains(choosenInterest)) {
                                     } else if (!group.getInterest_base().equals(choosenInterest)) {
                                         LinearLayout result = parentLinearLayout.findViewById(R.id.result);
                                         if (result != null) {
