@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -57,6 +58,25 @@ public class FindNewGroup extends AppCompatActivity {
         searchGroup = findViewById(R.id.search_group_button);
         searchView = findViewById(R.id.search_group);
 
+        spinner = findViewById(R.id.interest_spinner);
+        controller.getAllInterests(new DatabaseReturner(){
+
+            @Override
+            public void returner(DataSnapshot dataSnapshot) {
+                final ArrayList<String> groupNameList = new ArrayList<>();
+                groupNameList.add("");
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    final Group group = postSnapshot.getValue(Group.class);
+                    groupNameList.add(group.getName());
+                }
+                //final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>();
+                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(FindNewGroup.this, R.layout.spinner_item, groupNameList);
+
+                spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+                spinner.setAdapter(spinnerArrayAdapter);
+            }
+        });
+
         createNewGroup.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -80,19 +100,32 @@ public class FindNewGroup extends AppCompatActivity {
                             if (dataSnapshot.getValue() != null) {
                                 LinearLayout parentLinearLayout = findViewById(R.id.group_result);
                                 //parentLinearLayout.removeAllViews();
-                                final ProgressBar spinner = findViewById(R.id.progress_bar);
+                                final ProgressBar progressBar = findViewById(R.id.progress_bar);
                                 parentLinearLayout.setVisibility(View.VISIBLE);
                                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                 int i = 0;
+                                String choosenInterest = spinner.getSelectedItem().toString();
+                                boolean noSpecificInterest = false;
+                                if(choosenInterest.equals("")) {
+                                    noSpecificInterest = true;
+                                }
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    View rowView = inflater.inflate(R.layout.fragment_new_group, null, false);
                                     final Group group = postSnapshot.getValue(Group.class);
-                                    LinearLayout result = parentLinearLayout.findViewById(R.id.result);
-                                    if (result != null) {
-                                        result.removeAllViews();
-                                    }
                                     if(groupNamesForUser.contains(group.getName())) {
                                         continue;
+                                    } else if (noSpecificInterest) {
+                                    } else if (!group.getInterest_base().equals(choosenInterest)) {
+                                        LinearLayout result = parentLinearLayout.findViewById(R.id.result);
+                                        if (result != null) {
+                                            parentLinearLayout.removeView(result);
+                                        }
+                                        continue;
+                                    }
+                                    View rowView = inflater.inflate(R.layout.fragment_new_group, null, false);
+                                    LinearLayout result = parentLinearLayout.findViewById(R.id.result);
+
+                                    if (result != null) {
+                                        result.removeAllViews();
                                     }
                                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
 
@@ -117,7 +150,7 @@ public class FindNewGroup extends AppCompatActivity {
                                     linearLayoutArrayList.add(linearLayout);
                                     i++;
                                 }
-                                spinner.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
                             } else {
                                 Log.d("d::::", "else");
                                 LinearLayout parentLinearLayout = findViewById(R.id.group_result);
@@ -127,7 +160,7 @@ public class FindNewGroup extends AppCompatActivity {
                                 }
                             }
                         }
-                    }, 1, searchText);
+                    }, currentUserID, searchText);
                 } else {
                     LinearLayout parentLinearLayout = findViewById(R.id.group_result);
                     LinearLayout result = parentLinearLayout.findViewById(R.id.result);

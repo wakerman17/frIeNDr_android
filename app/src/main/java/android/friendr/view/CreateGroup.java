@@ -34,24 +34,21 @@ public class CreateGroup extends AppCompatActivity {
         if (null != intent) {
             currentUserID = (String) intent.getSerializableExtra("currentUserID");
         }
-
-        final Spinner interestSpinner =  findViewById(R.id.interest);
         groupNameET = findViewById(R.id.group_name);
         groupDescriptionET = findViewById(R.id.group_description);
 
-        final Spinner spinner = findViewById(R.id.interest);
+        final Spinner spinner = findViewById(R.id.interest_spinner);
         controller.getAllInterests(new DatabaseReturner(){
 
             @Override
             public void returner(DataSnapshot dataSnapshot) {
-                int i = 0;
-                final ArrayList<String> plantsList = new ArrayList<>();
+                final ArrayList<String> groupNameList = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     final Group group = postSnapshot.getValue(Group.class);
-                    plantsList.add(group.getName());
+                    groupNameList.add(group.getName());
                 }
                 //final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>();
-                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateGroup.this, R.layout.spinner_item, plantsList);
+                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateGroup.this, R.layout.spinner_item, groupNameList);
 
                 spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 spinner.setAdapter(spinnerArrayAdapter);
@@ -65,7 +62,7 @@ public class CreateGroup extends AppCompatActivity {
             public void onClick(View arg0) {
                 String groupName = groupNameET.getText().toString();
                 String groupDescription = groupDescriptionET.getText().toString();
-                final String interest = interestSpinner.getSelectedItem().toString();
+                final String interest = spinner.getSelectedItem().toString();
                 controller.addGroup(groupName, groupDescription, interest, currentUserID);
                 Intent nextWindow = new Intent(CreateGroup.this, Index.class);
                 startActivity(nextWindow);

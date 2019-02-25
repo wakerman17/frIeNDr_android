@@ -62,7 +62,7 @@ public class InterestAndGroupDAO implements Serializable {
         database.child("interest_profile").child(postId).setValue(hashMap);
     }
 
-    public void getGroupSearchResult(final DatabaseReturner databaseReturner, int id, String searchText) {
+    public void getGroupSearchResult(final DatabaseReturner databaseReturner, String id, String searchText) {
         Query query = database.child("group").orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

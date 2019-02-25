@@ -27,7 +27,7 @@ public class Controller implements Serializable {
         interestAndGroupDAO.getInterestSearchResult(databaseReturner, id, searchText);
     }
 
-    public void getGroupSearchResult(DatabaseReturner databaseReturner, int id, String searchText){
+    public void getGroupSearchResult(DatabaseReturner databaseReturner, String id, String searchText){
         interestAndGroupDAO.getGroupSearchResult(databaseReturner, id, searchText);
     }
 
