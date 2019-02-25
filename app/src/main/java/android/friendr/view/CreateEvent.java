@@ -32,12 +32,14 @@ public class CreateEvent extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     DatabaseReference EventRef, RootRef;
-    String currentUserID;
+    String currentUserID, currentGroupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        currentGroupName = getIntent().getExtras().get("groupName").toString();
 
         date = new MyEditTextDatePicker(this, R.id.ev_date);
         titleInput = findViewById(R.id.ev_title);
@@ -66,9 +68,6 @@ public class CreateEvent extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     private void createNewEvent(final String txt_title, String txt_desc, String txt_date, String txt_max) {
@@ -76,18 +75,17 @@ public class CreateEvent extends AppCompatActivity {
         newEvent.put("title", txt_title);
         newEvent.put("description", txt_desc);
         newEvent.put("date", txt_date);
+        newEvent.put("attendees", "0");
         newEvent.put("max", txt_max);
 
-
-        // todo edit this to change groups dynamically
-        String currentGroup = "Test Group Name";
-        RootRef.child("Groups").child(currentGroup).child("Events").child(txt_date.replace("/","")+txt_title).setValue(newEvent)
+        RootRef.child("Groups").child(currentGroupName).child("Events").child(txt_date.replace("/","")+txt_title).setValue(newEvent)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(CreateEvent.this, txt_title + " event created!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CreateEvent.this, EventList.class);
+                            intent.putExtra("groupName", currentGroupName);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();

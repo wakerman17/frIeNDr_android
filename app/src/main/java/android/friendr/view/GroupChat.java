@@ -50,20 +50,19 @@ public class GroupChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 
-
-        // todo pass in group name and edit title
-        //currentGroupName = getIntent().getExtras().get(currentGroupName);
-        currentGroupName = "Test Group Name";
+        currentUserID = getIntent().getExtras().get("currentUserID").toString();
+        currentGroupName = getIntent().getExtras().get("groupNamesForUser").toString();
         getSupportActionBar().setTitle(currentGroupName);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        //currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Chat");
 
+
         initFields();
         getUserInfo();
-
+        addChat();
 
 
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -87,19 +86,15 @@ public class GroupChat extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(GroupChat.this, EventList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("groupName", currentGroupName);
                 startActivity(intent);
-                finish();
             }
         });
 
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getUserInfo();
+    protected void addChat() {
 
         GroupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -194,20 +189,6 @@ public class GroupChat extends AppCompatActivity {
             GroupMessageKeyRef.updateChildren(messageInfoMap);
         }
     }
-
-
-
-    public void toLiveEvents(View view) {
-        Intent eventIntent = new Intent(this, EventChat.class);
-        startActivity(eventIntent);
-    }
-
-
-    public void toCreateEvent(View view) {
-        Intent createEventIntent = new Intent(this, CreateEvent.class);
-        startActivity(createEventIntent);
-    }
-
 
 
     private void displayAllMessages(DataSnapshot dataSnapshot) {

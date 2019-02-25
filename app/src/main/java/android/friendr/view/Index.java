@@ -89,7 +89,7 @@ public class Index extends AppCompatActivity {
                     final Group group = postSnapshot.getValue(Group.class);
                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
                     TextView group_text = parentLinearLayout.findViewById(R.id.group);
-                    String groupName = group.getName();
+                    final String groupName = group.getName();
                     group_text.setText(groupName);
                     groupNamesForUser.add(groupName);
                     final Switch switch_view = parentLinearLayout.findViewById(R.id.group_switch);
@@ -114,6 +114,8 @@ public class Index extends AppCompatActivity {
                         @Override
                         public void onClick(View arg0) {
                             Intent nextWindow = new Intent(Index.this, GroupChat.class);
+                            nextWindow.putExtra("currentUserID", currentUserID);
+                            nextWindow.putExtra("groupNamesForUser", groupName);
                             startActivity(nextWindow);
                         }
                     });
