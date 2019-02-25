@@ -14,21 +14,24 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class EventList extends AppCompatActivity {
     String currentGroupName;
     Button btnCreateEvent;
     LinearLayout eventListView;
-    ArrayList<Event> eventList = new ArrayList<>();
 
     DatabaseReference EventRef;
 
@@ -106,8 +109,8 @@ public class EventList extends AppCompatActivity {
             final String evLoc = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evMax = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evTitle = (String) ((DataSnapshot) iterator.next()).getValue();
-
-            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax);
+            String dbRef = evDate.replace("/", "") + evTitle;
+            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax, dbRef);
 
             myEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,8 +132,10 @@ public class EventList extends AppCompatActivity {
         }
     }
 
-    public RelativeLayout displayEvent(String date, String title, String desc, String att, String max) {
+    public RelativeLayout displayEvent(String date, final String title, String desc, String att, String max, final String dbRef) {
         RelativeLayout my_event = (RelativeLayout) LayoutInflater.from(EventList.this).inflate(R.layout.event, null);
+        Button btn_join = new Button(my_event.getContext());
+        btn_join.setText("Join");
         LinearLayout ll = (LinearLayout) my_event.getChildAt(0);
         TextView ev_date = (TextView) ll.getChildAt(0);
         final TextView ev_title = (TextView) ll.getChildAt(1);
@@ -138,9 +143,38 @@ public class EventList extends AppCompatActivity {
         ev_date.setText(date);
         ev_title.setText(title);
         ev_max.setText(att + "/" + max);
-        my_event.setTag(ev_title);
+        ll.addView(btn_join);
+
+        btn_join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addEvent(title, dbRef);
+            }
+        });
 
         return my_event;
     }
 
+
+    private void addEvent(final String currentEventName, String dbRef) {
+        HashMap<String, Object> attendingUser = new HashMap<>();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        String currentUserID = mAuth.getCurrentUser().getUid();
+        attendingUser.put(currentUserID, "true");
+
+
+        EventRef.child(dbRef).child("attendees").updateChildren(attendingUser)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(EventList.this, "Joined " + currentEventName + "!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(EventList.this, "Something went wrong! Try again!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+    }
 }

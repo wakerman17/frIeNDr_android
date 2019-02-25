@@ -84,56 +84,31 @@
             android:text="TextView"
             android:textSize="18sp" />
     </TableRow>
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description: " />
-
-        <TextView
-            android:id="@+id/head_ev_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView"
-            android:textSize="18sp" />
-    </TableRow>
 
     </TableLayout>
 
     <LinearLayout
-        android:layout_below="@+id/ev_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_below="@+id/ev_header"
+        android:paddingTop="20dp"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/ev_attending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Attending" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description: " />
+
+            <TextView
+                android:id="@+id/head_ev_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="24sp" />
     </LinearLayout>
-
-    <ScrollView
-        android:id="@+id/ev_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footer"
-        >
-
-        <LinearLayout
-            android:id="@+id/ev_message_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-        </LinearLayout>
-    </ScrollView>
 
 
     <!--
