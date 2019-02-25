@@ -11,7 +11,7 @@
     <string name="to_general_chat">To General Chat</string>
     <string name="events">Events</string>
     <string name="join_event">Join Event</string>
-    <string name="search_interest">Search interest:</string>
+    <string name="search_interest">Search interest</string>
     <string name="add_interest">Add interest</string>
     <string name="create_new_interest">Create new interest</string>
     <string name="search_group">Search group</string>
@@ -49,6 +49,8 @@
     <string name="home_log_in">Log in</string>
     <string name="go_to_group_page">Go to group page</string>
     <string name="go_to_general_chat">Go to general chat</string>
+    <string name="result">Result</string>
+    <string name="add">Add</string>
 
     <string-array name="interests_array">
         <item>Mobile</item>
