@@ -1,5 +1,6 @@
 package android.friendr.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.friendr.R;
 import android.friendr.view.viewObject.Event;
@@ -9,10 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,21 +44,6 @@ public class EventList extends AppCompatActivity {
         initFields();
         getEvents();
 
-
-        eventListView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int thisEventID = view.getId();
-                View event = findViewById(thisEventID);
-                System.out.println(">>> Event name: " + event.getTag());
-
-
-                Intent intent = new Intent(EventList.this,EventChat.class);
-                intent.putExtra("eventName", "My event <3");
-                intent.putExtra("groupName", currentGroupName);
-                startActivity(intent);
-            }
-        });
 
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,27 +100,59 @@ public class EventList extends AppCompatActivity {
         Iterator iterator = dataSnapshot.getChildren().iterator();
 
         while (iterator.hasNext()) {
-            String evAtt = (String) ((DataSnapshot) iterator.next()).getValue();
-            String evDate = (String) ((DataSnapshot) iterator.next()).getValue();
-            String evDesc = (String) ((DataSnapshot) iterator.next()).getValue();
-            String evMax = (String) ((DataSnapshot) iterator.next()).getValue();
-            String evTitle = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evAtt = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evDate = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evDesc = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evLoc = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evMax = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evTitle = (String) ((DataSnapshot) iterator.next()).getValue();
 
-            displayEvent(evDate, evTitle, evDesc, evAtt, evMax);
+            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax);
+
+            myEvent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    System.out.println(">>>>>>>>>>>><");
+                    System.out.println(">>> Event date: " + evDate);
+                    System.out.println(">>> Event name: " + evTitle);
+                    System.out.println(">>> Event desc: " + evDesc);
+                    System.out.println(">>> Event loc: " + evLoc);
+                    System.out.println(">>> Event att: " + evAtt);
+                    System.out.println(">>> Event max: " + evMax);
+                    System.out.println(">>>dbRef" + evDate.replace("/", "") + evTitle);
+
+                    Intent intent = new Intent(EventList.this,EventChat.class);
+                    intent.putExtra("dbRef", evDate.replace("/", "") + evTitle);
+                    intent.putExtra("eventName", evTitle);
+                    intent.putExtra("eventDate", evDate);
+                    intent.putExtra("eventDesc", evDesc);
+                    intent.putExtra("eventLoc", evLoc);
+                    intent.putExtra("eventAtt", evDesc);
+                    intent.putExtra("eventMax", evDesc);
+                    intent.putExtra("groupName", currentGroupName);
+                    startActivity(intent);
+                }
+            });
+
+            eventListView.addView(myEvent);
         }
     }
 
-    public void displayEvent(String date, String title, String desc, String att, String max) {
+    public RelativeLayout displayEvent(String date, String title, String desc, String att, String max) {
         RelativeLayout my_event = (RelativeLayout) LayoutInflater.from(EventList.this).inflate(R.layout.event, null);
         LinearLayout ll = (LinearLayout) my_event.getChildAt(0);
         TextView ev_date = (TextView) ll.getChildAt(0);
-        TextView ev_title = (TextView) ll.getChildAt(1);
+        final TextView ev_title = (TextView) ll.getChildAt(1);
         TextView ev_max = (TextView) ll.getChildAt(2);
         ev_date.setText(date);
         ev_title.setText(title);
         ev_max.setText(att + "/" + max);
         my_event.setTag(ev_title);
-        eventListView.addView(my_event);
+
+        return my_event;
+
+
+        //eventListView.addView(my_event);
     }
 
 }

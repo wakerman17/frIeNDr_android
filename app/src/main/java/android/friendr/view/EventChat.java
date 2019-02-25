@@ -33,11 +33,29 @@ import java.util.Iterator;
 
 public class EventChat extends AppCompatActivity {
 
+    private String eventDBRef;
+    private String currentUserID;
+    private String currentGroupName, currentEventName, currentEventDesc, currentEventAtt, currentEventMax, currentEventLoc;
+    private TextView eventDescripion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_chat);
+        setContentView(R.layout.activity_event_chat);
 
+        currentGroupName = getIntent().getExtras().get("groupName").toString();
+        currentEventName = getIntent().getExtras().get("eventDate").toString();
+        currentEventName = getIntent().getExtras().get("eventName").toString();
+        currentEventDesc = getIntent().getExtras().get("eventDesc").toString();
+        currentEventLoc = getIntent().getExtras().get("eventLoc").toString();
+        currentEventLoc = getIntent().getExtras().get("eventAtt").toString();
+        currentEventLoc = getIntent().getExtras().get("eventMax").toString();
+        eventDBRef = getIntent().getExtras().get("dbRef").toString();
+
+        eventDescripion = findViewById(R.id.ev_desc);
+        eventDescripion.setText(currentEventDesc);
+
+        getSupportActionBar().setTitle(currentEventName);
 
     }
 

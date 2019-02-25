@@ -91,6 +91,12 @@ public class GroupChat extends AppCompatActivity {
             }
         });
 
+        mScrollView.post(new Runnable() {
+            public void run() {
+                mScrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
+
     }
 
 

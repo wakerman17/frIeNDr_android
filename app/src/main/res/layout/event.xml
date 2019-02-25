@@ -41,15 +41,6 @@
             android:text="1/4"
             android:textColor="@android:color/white"/>
 
-        <Button
-            android:id="@+id/ev_join"
-            android:layout_width="45dp"
-            android:background="@drawable/my_message"
-            android:elevation="45dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Join" />
-
     </LinearLayout>
 
 

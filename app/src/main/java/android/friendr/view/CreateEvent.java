@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class CreateEvent extends AppCompatActivity {
 
     EditText titleInput;
-    EditText descriptionInput;
+    EditText descriptionInput, locationInput;
     EditText maxAttendeesInput;
     MyEditTextDatePicker date;
     Button btnCreateEvent;
@@ -43,9 +43,11 @@ public class CreateEvent extends AppCompatActivity {
 
         date = new MyEditTextDatePicker(this, R.id.ev_date);
         titleInput = findViewById(R.id.ev_title);
+        locationInput = findViewById(R.id.ev_location);
         descriptionInput = findViewById(R.id.ev_description);
         maxAttendeesInput = findViewById(R.id.ev_max);
         btnCreateEvent = findViewById(R.id.ev_save_button);
+
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
@@ -59,23 +61,25 @@ public class CreateEvent extends AppCompatActivity {
                 String txt_desc = descriptionInput.getText().toString();
                 String txt_date = date._editText.getText().toString();
                 String txt_max = maxAttendeesInput.getText().toString();
+                String txt_location = locationInput.getText().toString();
 
                 if (TextUtils.isEmpty(txt_date) || TextUtils.isEmpty(txt_desc) ||
                         TextUtils.isEmpty(txt_date) || TextUtils.isEmpty(txt_max)) {
                     Toast.makeText(CreateEvent.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    createNewEvent(txt_title, txt_desc, txt_date, txt_max);
+                    createNewEvent(txt_title, txt_desc, txt_date, txt_location, txt_max);
                 }
             }
         });
     }
 
-    private void createNewEvent(final String txt_title, String txt_desc, String txt_date, String txt_max) {
+    private void createNewEvent(final String txt_title, String txt_desc, String txt_date, String txt_location, String txt_max) {
         HashMap<String, String> newEvent = new HashMap<>();
         newEvent.put("title", txt_title);
         newEvent.put("description", txt_desc);
         newEvent.put("date", txt_date);
         newEvent.put("attendees", "0");
+        newEvent.put("location", txt_location);
         newEvent.put("max", txt_max);
 
         RootRef.child("Groups").child(currentGroupName).child("Events").child(txt_date.replace("/","")+txt_title).setValue(newEvent)
@@ -97,16 +101,6 @@ public class CreateEvent extends AppCompatActivity {
     }
 
 
-    public void createEvent(View view) {
-        Editable title = titleInput.getText();
-        Editable description = descriptionInput.getText();
-        Editable evDate = date._editText.getText();
-        Integer maxAtt = Integer.getInteger(String.valueOf(maxAttendeesInput.getText()));
-
-        Event e = new Event(title, description, evDate, maxAtt);
-        // todo: do something with the event  (show on "events page")
-        System.out.println(e.getTitle() +": "+e.getDescription()+", "+e.getDate());
-    }
 
     public void toEvent(View view) {
         Intent eventIntent = new Intent(this, EventChat.class);

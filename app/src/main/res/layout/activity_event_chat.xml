@@ -10,6 +10,13 @@
     tools:context=".view.GroupChat"
     >
 
+    <TextView
+        android:id="@+id/ev_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="18sp" />
+
     <ScrollView
         android:id="@+id/ev_scroll_view"
         android:layout_width="match_parent"
