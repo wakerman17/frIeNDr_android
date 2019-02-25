@@ -148,6 +148,9 @@ public class EventList extends AppCompatActivity {
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RelativeLayout event = (RelativeLayout) view.getParent().getParent();
+                LinearLayout parentLinearLayout = findViewById(R.id.ev_list_view);
+                event.removeAllViews();
                 addEvent(title, dbRef);
             }
         });

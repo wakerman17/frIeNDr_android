@@ -75,18 +75,24 @@ public class CreateEvent extends AppCompatActivity {
 
     private void createNewEvent(final String txt_title, String txt_desc, String txt_date, String txt_location, String txt_max) {
         HashMap<String, String> newEvent = new HashMap<>();
+        newEvent.put("attendees", "");
         newEvent.put("title", txt_title);
         newEvent.put("description", txt_desc);
         newEvent.put("date", txt_date);
-        newEvent.put("attendees", "");
         newEvent.put("location", txt_location);
         newEvent.put("max", txt_max);
 
-        RootRef.child("Groups").child(currentGroupName).child("Events").child(txt_date.replace("/","")+txt_title).setValue(newEvent)
+        String dateAndEvent = txt_date.replace("/","")+txt_title;
+        final DatabaseReference eventRef = RootRef.child("Groups").child(currentGroupName).child("Events").child(dateAndEvent);
+
+        eventRef.setValue(newEvent)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            HashMap<String, Object> attendingUser = new HashMap<>();
+                            attendingUser.put("name", currentUserID);
+                            eventRef.child("attendees").setValue(attendingUser); //.updateChildren(attendingUser);
                             Toast.makeText(CreateEvent.this, txt_title + " event created!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CreateEvent.this, EventList.class);
                             intent.putExtra("groupName", currentGroupName);

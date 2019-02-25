@@ -48,13 +48,6 @@ public class EventChat extends AppCompatActivity {
         setup();
         EventRef = RootRef.child("Groups").child(currentGroupName).child("Events").child(eventDBRef);
 
-        btn_attending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addEvent();
-            }
-        });
-
     }
 
 
@@ -69,7 +62,6 @@ public class EventChat extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(EventChat.this, "Joined " + currentEventName + "!", Toast.LENGTH_SHORT).show();
-                            btn_attending.setText("Attending");
                         } else {
                             Toast.makeText(EventChat.this, "Something went wrong! Try again!", Toast.LENGTH_SHORT).show();
                         }
@@ -96,7 +88,6 @@ public class EventChat extends AppCompatActivity {
         eventMax = findViewById(R.id.head_ev_maxAtt);
         eventDate = findViewById(R.id.head_ev_dat);
         eventLoc = findViewById(R.id.head_ev_loc);
-        btn_attending = findViewById(R.id.ev_attending);
         messageView = findViewById(R.id.ev_list_view);
 
 
