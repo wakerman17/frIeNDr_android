@@ -91,12 +91,6 @@ public class GroupChat extends AppCompatActivity {
             }
         });
 
-        mScrollView.post(new Runnable() {
-            public void run() {
-                mScrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
-
     }
 
 
@@ -130,6 +124,11 @@ public class GroupChat extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        mScrollView.post(new Runnable() {
+            public void run() {
+                mScrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
     }

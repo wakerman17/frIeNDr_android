@@ -10,12 +10,114 @@
     tools:context=".view.GroupChat"
     >
 
-    <TextView
-        android:id="@+id/ev_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="18sp" />
+    <TableLayout
+        android:id="@+id/ev_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date:" />
+
+            <TextView
+                android:id="@+id/head_ev_dat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textSize="18sp" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:" />
+
+            <TextView
+                android:id="@+id/head_ev_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textSize="18sp" />
+        </TableRow>
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attending: " />
+
+        <TextView
+            android:id="@+id/head_ev_att"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max: " />
+
+        <TextView
+            android:id="@+id/head_ev_maxAtt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="18sp" />
+    </TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description: " />
+
+        <TextView
+            android:id="@+id/head_ev_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="18sp" />
+    </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/ev_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ev_attending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Attending" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/ev_scroll_view"
@@ -32,6 +134,9 @@
 
         </LinearLayout>
     </ScrollView>
+
+
+    <!--
 
     <LinearLayout
         android:id="@+id/footer"
@@ -65,8 +170,9 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:background="@drawable/ico_send_msg" />
-
     </LinearLayout>
+
+    -->
 
 
 </RelativeLayout>

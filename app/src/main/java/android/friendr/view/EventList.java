@@ -100,7 +100,7 @@ public class EventList extends AppCompatActivity {
         Iterator iterator = dataSnapshot.getChildren().iterator();
 
         while (iterator.hasNext()) {
-            final String evAtt = (String) ((DataSnapshot) iterator.next()).getValue();
+            final String evAtt = (String) ""+ ((DataSnapshot) iterator.next()).getChildrenCount();
             final String evDate = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evDesc = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evLoc = (String) ((DataSnapshot) iterator.next()).getValue();
@@ -112,23 +112,14 @@ public class EventList extends AppCompatActivity {
             myEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println(">>>>>>>>>>>><");
-                    System.out.println(">>> Event date: " + evDate);
-                    System.out.println(">>> Event name: " + evTitle);
-                    System.out.println(">>> Event desc: " + evDesc);
-                    System.out.println(">>> Event loc: " + evLoc);
-                    System.out.println(">>> Event att: " + evAtt);
-                    System.out.println(">>> Event max: " + evMax);
-                    System.out.println(">>>dbRef" + evDate.replace("/", "") + evTitle);
-
                     Intent intent = new Intent(EventList.this,EventChat.class);
                     intent.putExtra("dbRef", evDate.replace("/", "") + evTitle);
                     intent.putExtra("eventName", evTitle);
                     intent.putExtra("eventDate", evDate);
                     intent.putExtra("eventDesc", evDesc);
                     intent.putExtra("eventLoc", evLoc);
-                    intent.putExtra("eventAtt", evDesc);
-                    intent.putExtra("eventMax", evDesc);
+                    intent.putExtra("eventAtt", evAtt);
+                    intent.putExtra("eventMax", evMax);
                     intent.putExtra("groupName", currentGroupName);
                     startActivity(intent);
                 }
@@ -150,9 +141,6 @@ public class EventList extends AppCompatActivity {
         my_event.setTag(ev_title);
 
         return my_event;
-
-
-        //eventListView.addView(my_event);
     }
 
 }

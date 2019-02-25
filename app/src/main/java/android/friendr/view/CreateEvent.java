@@ -78,7 +78,7 @@ public class CreateEvent extends AppCompatActivity {
         newEvent.put("title", txt_title);
         newEvent.put("description", txt_desc);
         newEvent.put("date", txt_date);
-        newEvent.put("attendees", "0");
+        newEvent.put("attendees", "");
         newEvent.put("location", txt_location);
         newEvent.put("max", txt_max);
 
