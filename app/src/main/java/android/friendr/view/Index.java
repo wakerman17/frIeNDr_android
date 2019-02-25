@@ -29,6 +29,7 @@ public class Index extends AppCompatActivity {
     int userID = 1;
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
     String currentUserID;
+    HashSet<String> interestNamesForUser = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class Index extends AppCompatActivity {
                 final ProgressBar spinner = findViewById(R.id.progressBar1);
                 LinearLayout parentLinearLayout = findViewById(R.id.parent_linear_layout_interest);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final HashSet<String> interestNamesForUser = new HashSet<>();
+
                 //final String[] interestNamesForUser = new String[(int) dataSnapshot.getChildrenCount()];
                 //final ArrayList<String> interestNamesForUser = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -136,6 +137,7 @@ public class Index extends AppCompatActivity {
                         Intent nextWindow = new Intent(Index.this, FindNewGroup.class);
                         nextWindow.putExtra("currentUserID", currentUserID);
                         nextWindow.putExtra("groupNamesForUser", groupNamesForUser);
+                        nextWindow.putExtra("interestNamesForUser", interestNamesForUser);
                         startActivity(nextWindow);
                     }
                 });
