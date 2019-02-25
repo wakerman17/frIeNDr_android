@@ -12,11 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_interest"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/search_interest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,22 +24,26 @@
         android:id="@+id/search_interest"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_interests_button"
-        app:layout_constraintTop_toBottomOf="@+id/textView23"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintBottom_toTopOf="@+id/result_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
     <LinearLayout
         android:id="@+id/result_view"
-        android:layout_width="133dp"
-        android:layout_height="43dp"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
         android:background="#66E27E20"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintBottom_toBottomOf="@+id/add_interests_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.107">
+        app:layout_constraintTop_toBottomOf="@+id/search_interest"
+        app:layout_constraintVertical_bias="0.321">
 
         <TextView
             android:id="@+id/textView7"
@@ -60,7 +64,7 @@
         android:id="@+id/add_interests_button"
         android:layout_width="407dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="32dp"
         android:layout_weight="1"
         android:text="@string/search_interest"
         app:layout_constraintEnd_toEndOf="parent"

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.friendr.R;
 import android.friendr.controller.Controller;
 import android.friendr.integration.DatabaseReturner;
-import android.friendr.view.viewObject.InterestProfile;
 import android.friendr.view.viewObject.Interests;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -18,16 +17,29 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class FindNewInterest extends AppCompatActivity {
 
     SearchView searchView;
+    Controller controller = new Controller();
+    String currentUserID;
+    HashSet<String> interestNamesForUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_new_interest);
+
+        Intent intent = getIntent();
+        if (null != intent) {
+            currentUserID = (String) intent.getSerializableExtra("currentUserID");
+            interestNamesForUser = (HashSet<String>) intent.getSerializableExtra("interestNamesForUser");
+        }
 
         searchView = findViewById(R.id.search_interest);
 
@@ -37,7 +49,9 @@ public class FindNewInterest extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent nextWindow = new Intent(FindNewInterest.this, CreateGroup.class);
+                String searchText = searchView.getQuery().toString();
+                controller.addInterest(searchText, currentUserID);
+                Intent nextWindow = new Intent(FindNewInterest.this, Index.class);
                 startActivity(nextWindow);
             }
         });
@@ -53,12 +67,13 @@ public class FindNewInterest extends AppCompatActivity {
             public void onClick(View arg0) {
                 String searchText = searchView.getQuery().toString();
                 if(!searchText.isEmpty()) {
-                    Controller controller = new Controller();
+                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                    final String currentUserID = mAuth.getCurrentUser().getUid();
                     controller.getInterestSearchResult(new DatabaseReturner() {
 
                         @Override
                         public void returner(DataSnapshot dataSnapshot) {
-                            //Show result using fragment_interest.xml and it's dynamic view,
+                            //Show result using fragment_interests.xmll and it's dynamic view,
                             // same for group search
                             if (dataSnapshot != null) {
                                 ProgressBar spinner = findViewById(R.id.progressBar3);
@@ -71,13 +86,26 @@ public class FindNewInterest extends AppCompatActivity {
                                 }
 
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    View rowView = inflater.inflate(R.layout.fragment_interests, null, false);
+                                    View rowView = inflater.inflate(R.layout.fragment_new_interests, null, false);
                                     Interests interestProfile = postSnapshot.getValue(Interests.class);
-
+                                    if(interestNamesForUser.contains(interestProfile.getName())) {
+                                        continue;
+                                    }
                                     spinner = findViewById(R.id.progressBar3);
                                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
                                     TextView interest_text = parentLinearLayout.findViewById(R.id.interest);
-                                    interest_text.setText(interestProfile.getName());
+                                    final String interestName = interestProfile.getName();
+                                    interest_text.setText(interestName);
+                                    Button addInterest = parentLinearLayout.findViewById(R.id.add_interests_button);
+                                    addInterest.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            controller.addUserInterest(interestName, currentUserID);
+                                            Intent nextWindow = new Intent(FindNewInterest.this, Index.class);
+                                            startActivity(nextWindow);
+                                        }
+                                    });
+                                    addInterest.setId((int) (Math.random() * 1000 + 1));
                                     interest_text.setId((int) (Math.random() * 1000 + 1));
                                 }
                                 spinner.setVisibility(View.GONE);
@@ -89,7 +117,7 @@ public class FindNewInterest extends AppCompatActivity {
                                 }
                             }
                         }
-                    }, 1, searchText);
+                    }, currentUserID, searchText);
                 } else {
                     LinearLayout parentLinearLayout = findViewById(R.id.result_view);
                     LinearLayout result = parentLinearLayout.findViewById(R.id.result_interest);
@@ -101,4 +129,6 @@ public class FindNewInterest extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -50,6 +50,7 @@
     <string name="go_to_group_page">Go to group page</string>
     <string name="go_to_general_chat">Go to general chat</string>
     <string name="result">Result</string>
+    <string name="add">Add</string>
 
     <string-array name="interests_array">
         <item>Mobile</item>

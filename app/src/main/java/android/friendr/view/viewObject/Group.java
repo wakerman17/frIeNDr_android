@@ -4,39 +4,31 @@ import java.io.Serializable;
 
 public class Group implements Serializable {
 
-    private int amount_of_members;
-    private String description;
-    private String interest;
-    private String name;
-    private int user_id;
+    private String description, interest_base, name, user_id;
 
     public Group() {}
 
-    public Group(int amount_of_members, String description, String interest, String name, int user_id) {
-        this.amount_of_members = amount_of_members;
+    public Group(String description, String interest, String name, String user_id) {
         this.description = description;
-        this.interest = interest;
+        this.interest_base = interest;
         this.name = name;
         this.user_id = user_id;
     }
 
-    public int getAmountOfMembers() {
-        return amount_of_members;
-    }
 
     public String getDescription() {
         return description;
     }
 
-    public String getInterest() {
-        return interest;
+    public String getInterest_base() {
+        return interest_base;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getUserID() {
+    public String getUser_id() {
         return user_id;
     }
 }

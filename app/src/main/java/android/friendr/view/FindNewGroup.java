@@ -21,9 +21,11 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class FindNewGroup extends AppCompatActivity {
 
@@ -35,22 +37,32 @@ public class FindNewGroup extends AppCompatActivity {
     Spinner spinner;
     SearchView searchView;
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
+    String currentUserID;
+    HashSet<String> groupNamesForUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_new_group);
 
+        Intent intent = getIntent();
+        if (null != intent) {
+            currentUserID = (String) intent.getSerializableExtra("currentUserID");
+            groupNamesForUser = (HashSet<String>) intent.getSerializableExtra("groupNamesForUser");
+        }
+
         groupResult = findViewById(R.id.group_result);
         filterView = findViewById(R.id.filter_view);
         createNewGroup = findViewById(R.id.create_new_group);
         searchGroup = findViewById(R.id.search_group_button);
         searchView = findViewById(R.id.search_group);
+
         createNewGroup.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 Intent nextWindow = new Intent(FindNewGroup.this, CreateGroup.class);
+                nextWindow.putExtra("currentUserID", currentUserID);
                 startActivity(nextWindow);
             }
         });
@@ -74,19 +86,33 @@ public class FindNewGroup extends AppCompatActivity {
                                 int i = 0;
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                     View rowView = inflater.inflate(R.layout.fragment_new_group, null, false);
-                                    Group group = postSnapshot.getValue(Group.class);
+                                    final Group group = postSnapshot.getValue(Group.class);
                                     LinearLayout result = parentLinearLayout.findViewById(R.id.result);
                                     if (result != null) {
                                         result.removeAllViews();
                                     }
+                                    if(groupNamesForUser.contains(group.getName())) {
+                                        continue;
+                                    }
                                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
 
                                     TextView groupName = parentLinearLayout.findViewById(R.id.group_name_fragment);
+
                                     groupName.setText(group.getName());
                                     TextView description = parentLinearLayout.findViewById(R.id.group_description_fragment);
                                     description.setText(group.getDescription());
                                     final Switch switch_view = parentLinearLayout.findViewById(R.id.group_switch_fragment);
                                     final LinearLayout linearLayout = parentLinearLayout.findViewById(R.id.group_info);
+                                    Button joinGroup = parentLinearLayout.findViewById(R.id.join_group);
+                                    joinGroup.setOnClickListener(new View.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View v) {
+                                            controller.addUserGroup(group.getName(), group.getDescription(), group.getInterest_base(), currentUserID);
+                                            Intent nextWindow = new Intent(FindNewGroup.this, Index.class);
+                                            startActivity(nextWindow);
+                                        }
+                                    });
                                     switch_view.setTag(Integer.valueOf(i));
                                     linearLayoutArrayList.add(linearLayout);
                                     i++;
