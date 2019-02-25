@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/result"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/group"
+        android:id="@+id/group_name_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="18sp" />
 
     <Switch
-        android:id="@+id/group_switch"
+        android:id="@+id/group_switch_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
         android:onClick="toggle_group_goto"
-        android:text="@string/more_info" />
+        android:text="@string/more_info"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <LinearLayout
-        android:id="@+id/group_goto"
+        android:id="@+id/group_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <Button
-            android:id="@+id/to_general_page"
+        <TextView
+            android:id="@+id/group_description_fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/go_to_group_page" />
+            android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/to_general_chat"
+            android:id="@+id/join_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="toMyGroup"
-            android:text="@string/go_to_general_chat" />
+            android:text="@string/join" />
+
     </LinearLayout>
 </LinearLayout>

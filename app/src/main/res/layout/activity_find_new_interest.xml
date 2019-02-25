@@ -12,9 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/search_interest"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/search_interest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,25 +24,53 @@
         android:id="@+id/search_interest"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_interests_button"
+        app:layout_constraintBottom_toTopOf="@+id/result_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView23">
+        app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
-    </SearchView>
+    <LinearLayout
+        android:id="@+id/result_view"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:background="#66E27E20"
+        android:orientation="vertical"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="@+id/add_interests_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_interest"
+        app:layout_constraintVertical_bias="0.321">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/result" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="38dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/add_interests_button"
         android:layout_width="407dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="32dp"
         android:layout_weight="1"
-        android:text="@string/add_interest"
+        android:text="@string/search_interest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_interest" />
+        app:layout_constraintTop_toBottomOf="@+id/result_view" />
 
     <Button
         android:id="@+id/create_new_interest_button"

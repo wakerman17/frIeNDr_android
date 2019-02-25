@@ -2,6 +2,7 @@ package android.friendr.view;
 
 import android.content.Intent;
 import android.friendr.R;
+import android.friendr.view.viewObject.Group;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -49,20 +50,19 @@ public class GroupChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 
-
-        // todo pass in group name and edit title
-        //currentGroupName = getIntent().getExtras().get(currentGroupName);
-        currentGroupName = "Test Group Name";
+        currentUserID = getIntent().getExtras().get("currentUserID").toString();
+        currentGroupName = getIntent().getExtras().get("groupNamesForUser").toString();
         getSupportActionBar().setTitle(currentGroupName);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        //currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Chat");
 
+
         initFields();
         getUserInfo();
-
+        addChat();
 
 
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -85,18 +85,16 @@ public class GroupChat extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                Intent nextWindow = new Intent(GroupChat.this, EventList.class);
-                startActivity(nextWindow);
+                Intent intent = new Intent(GroupChat.this, EventList.class);
+                intent.putExtra("groupName", currentGroupName);
+                startActivity(intent);
             }
         });
 
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getUserInfo();
+    protected void addChat() {
 
         GroupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -126,6 +124,11 @@ public class GroupChat extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        mScrollView.post(new Runnable() {
+            public void run() {
+                mScrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
     }
@@ -193,20 +196,6 @@ public class GroupChat extends AppCompatActivity {
     }
 
 
-
-    public void toLiveEvents(View view) {
-        Intent eventIntent = new Intent(this, EventChat.class);
-        startActivity(eventIntent);
-    }
-
-
-    public void toCreateEvent(View view) {
-        Intent createEventIntent = new Intent(this, CreateEvent.class);
-        startActivity(createEventIntent);
-    }
-
-
-
     private void displayAllMessages(DataSnapshot dataSnapshot) {
         Iterator iterator = dataSnapshot.getChildren().iterator();
         while (iterator.hasNext()) {
@@ -216,6 +205,7 @@ public class GroupChat extends AppCompatActivity {
             String chatUsername = (String) ((DataSnapshot) iterator.next()).getValue();
 
             displayMessage(chatDate, chatTime, chatUsername, chatMessage);
+
 
             mScrollView.post(new Runnable() {
                 public void run() {

@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp"
-    android:layout_margin="5dp"
-    android:background="@drawable/their_message"
+
     android:clipToPadding="false">
 
     <LinearLayout
+        android:padding="20dp"
+        android:layout_margin="5dp"
+        android:id="@+id/ev_info"
+        android:background="@drawable/their_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -28,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:text="Codezilla 2019"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/textView29"
@@ -38,6 +40,9 @@
             android:textAlignment="center"
             android:text="1/4"
             android:textColor="@android:color/white"/>
+
     </LinearLayout>
+
+
 
 </RelativeLayout>

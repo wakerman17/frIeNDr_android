@@ -18,39 +18,61 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Index extends AppCompatActivity {
 
     int userID = 1;
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
+    String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
+
         Controller controller = new Controller();
         controller.getUserInterest(new DatabaseReturner() {
 
             @Override
-            public void returner(DataSnapshot dataSnapshot) {
+            public void returner(final DataSnapshot dataSnapshot) {
                 final ProgressBar spinner = findViewById(R.id.progressBar1);
                 LinearLayout parentLinearLayout = findViewById(R.id.parent_linear_layout_interest);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+                final HashSet<String> interestNamesForUser = new HashSet<>();
+                //final String[] interestNamesForUser = new String[(int) dataSnapshot.getChildrenCount()];
+                //final ArrayList<String> interestNamesForUser = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     View rowView = inflater.inflate(R.layout.fragment_interests, null, false);
                     InterestProfile interestProfile = postSnapshot.getValue(InterestProfile.class);
                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
                     TextView interest_text = parentLinearLayout.findViewById(R.id.interest);
-                    interest_text.setText(interestProfile.getInterest());
+                    String interestName = interestProfile.getInterest();
+                    interest_text.setText(interestName);
                     interest_text.setId((int)(Math.random() * 1000 + 1));
+                    interestNamesForUser.add(interestName);
                 }
                 spinner.setVisibility(View.GONE);
+                Button button = findViewById(R.id.add_interests);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        Intent nextWindow = new Intent(Index.this, FindNewInterest.class);
+                        nextWindow.putExtra("currentUserID", currentUserID);
+                        nextWindow.putExtra("interestNamesForUser", interestNamesForUser);
+                        startActivity(nextWindow);
+                    }
+                });
             }
-        }, userID);
+        }, currentUserID);
 
         startClickListener(R.id.add_interests, FindNewInterest.class);
         controller.getUserGroup(new DatabaseReturner() {
@@ -61,13 +83,15 @@ public class Index extends AppCompatActivity {
                 LinearLayout parentLinearLayout = findViewById(R.id.parent_linear_layout_group);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 int i = 0;
-
+                final HashSet<String> groupNamesForUser = new HashSet<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     View rowView = inflater.inflate(R.layout.fragment_group, null, false);
                     final Group group = postSnapshot.getValue(Group.class);
                     parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
                     TextView group_text = parentLinearLayout.findViewById(R.id.group);
-                    group_text.setText(group.getName());
+                    final String groupName = group.getName();
+                    group_text.setText(groupName);
+                    groupNamesForUser.add(groupName);
                     final Switch switch_view = parentLinearLayout.findViewById(R.id.group_switch);
                     final LinearLayout linearLayout = parentLinearLayout.findViewById(R.id.group_goto);
                     switch_view.setTag(Integer.valueOf(i));
@@ -90,14 +114,34 @@ public class Index extends AppCompatActivity {
                         @Override
                         public void onClick(View arg0) {
                             Intent nextWindow = new Intent(Index.this, GroupChat.class);
+                            nextWindow.putExtra("currentUserID", currentUserID);
+                            nextWindow.putExtra("groupNamesForUser", groupName);
                             startActivity(nextWindow);
                         }
                     });
+
+                    group_text.setId((int) Math.random() * 1000 + 1);
+                    switch_view.setId((int) Math.random() * 1000 + 1);
+                    linearLayout.setId((int) Math.random() * 1000 + 1);
+                    buttonGeneralPage.setId((int) Math.random() * 1000 + 1);
+                    buttonGeneralChat.setId((int) Math.random() * 1000 + 1);
+
                     i++;
                 }
+                Button button = findViewById(R.id.find_new_group);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        Intent nextWindow = new Intent(Index.this, FindNewGroup.class);
+                        nextWindow.putExtra("currentUserID", currentUserID);
+                        nextWindow.putExtra("groupNamesForUser", groupNamesForUser);
+                        startActivity(nextWindow);
+                    }
+                });
                 spinner.setVisibility(View.GONE);
             }
-        }, userID);
+        }, currentUserID);
         startClickListener(R.id.find_new_group, FindNewGroup.class);
     }
 
@@ -108,6 +152,7 @@ public class Index extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 Intent nextWindow = new Intent(Index.this, newWindowClass);
+                nextWindow.putExtra("currentUserID", currentUserID);
                 startActivity(nextWindow);
             }
         });

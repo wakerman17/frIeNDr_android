@@ -28,6 +28,14 @@
                 android:inputType="textPersonName"
                 android:hint="Event description"
                 android:id="@+id/ev_description"/>
+
+        <EditText
+            android:id="@+id/ev_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event location"
+            android:inputType="textPersonName" />
+
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
