@@ -105,6 +105,7 @@ public class Index extends AppCompatActivity {
                         @Override
                         public void onClick(View arg0) {
                             Intent nextWindow = new Intent(Index.this, GroupMainPage.class);
+                            nextWindow.putExtra("currentUserID", currentUserID);
                             nextWindow.putExtra("group", group);
                             startActivity(nextWindow);
                         }

@@ -39,8 +39,10 @@ public class CreateEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        currentGroupName = getIntent().getExtras().get("groupName").toString();
-
+        Intent intent = getIntent();
+        if (null != intent) {
+            currentGroupName = intent.getExtras().get("groupName").toString();
+        }
         date = new MyEditTextDatePicker(this, R.id.ev_date);
         titleInput = findViewById(R.id.ev_title);
         locationInput = findViewById(R.id.ev_location);

@@ -11,7 +11,7 @@
         android:id="@+id/ev_create_event_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create a new event" />
+        android:text="@string/create_a_new_event" />
 
     <ScrollView
         android:layout_below="@+id/ev_create_event_button"

@@ -14,7 +14,7 @@
         android:id="@+id/gr_to_live_events"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="To Live Events" />
+        android:text="@string/to_live_events" />
 
     <ScrollView
         android:id="@+id/gr_scroll_view"

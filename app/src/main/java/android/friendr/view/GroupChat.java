@@ -50,8 +50,11 @@ public class GroupChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
 
-        currentUserID = getIntent().getExtras().get("currentUserID").toString();
-        currentGroupName = getIntent().getExtras().get("groupNamesForUser").toString();
+        Intent intent = getIntent();
+        if (null != intent) {
+            currentUserID = intent.getExtras().get("currentUserID").toString();
+            currentGroupName = intent.getExtras().get("groupNamesForUser").toString();
+        }
         getSupportActionBar().setTitle(currentGroupName);
 
         mAuth = FirebaseAuth.getInstance();
