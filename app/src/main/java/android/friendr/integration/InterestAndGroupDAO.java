@@ -1,7 +1,14 @@
 package android.friendr.integration;
 
+import android.friendr.view.EventList;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -120,6 +127,96 @@ public class InterestAndGroupDAO implements Serializable {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    public void chatListener(final DatabaseReturner databaseReturner, String groupName) {
+        DatabaseReference groupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName).child("Chat");
+        groupNameRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void userInfo(final DatabaseReturner databaseReturner, String currentUserID) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        usersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void saveMessage(String currentUserName, String groupName, String txt_message, String currentDate, String currentTime) {
+        DatabaseReference groupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName).child("Chat");
+        String messageKey = groupNameRef.push().getKey();
+        HashMap<String, Object> groupMessageKey = new HashMap<>();
+        groupNameRef.updateChildren(groupMessageKey);
+
+        DatabaseReference groupMessageKeyRef = groupNameRef.child(messageKey);
+
+        HashMap<String, Object> messageInfoMap = new HashMap<>();
+        messageInfoMap.put("username", currentUserName);
+        messageInfoMap.put("message", txt_message);
+        messageInfoMap.put("date", currentDate);
+        messageInfoMap.put("time", currentTime);
+        groupMessageKeyRef.updateChildren(messageInfoMap);
+    }
+
+    public void getEvents(final DatabaseReturner databaseReturner, String currentGroupName) {
+        DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Events");
+        eventRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                databaseReturner.returner(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
         });
     }
 }

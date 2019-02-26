@@ -11,14 +11,12 @@ import android.widget.TextView;
 
 public class GroupMainPage extends AppCompatActivity {
     String groupNameString;
-    String userID;
+    String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_main_page);
-
-
 
         final TextView groupName = findViewById(R.id.group_name);
         TextView groupDescription = findViewById(R.id.group_description);
@@ -26,8 +24,8 @@ public class GroupMainPage extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (null != intent) {
+            currentUserID = intent.getStringExtra("currentUserID");
             Group group = (Group) intent.getSerializableExtra("group");
-            userID = (String) intent.getStringExtra("currentUserID");
             groupNameString = group.getName();
             groupName.setText(groupNameString);
             groupDescription.setText(group.getDescription());
@@ -50,7 +48,7 @@ public class GroupMainPage extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 Intent nextWindow = new Intent(GroupMainPage.this, GroupChat.class);
-                nextWindow.putExtra("currentUserID", userID);
+                nextWindow.putExtra("currentUserID", currentUserID);
                 nextWindow.putExtra("groupNamesForUser", groupNameString);
                 startActivity(nextWindow);
             }

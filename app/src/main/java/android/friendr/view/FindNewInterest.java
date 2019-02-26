@@ -2,9 +2,10 @@ package android.friendr.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.friendr.R;
-import android.friendr.controller.Controller;
 import android.friendr.integration.DatabaseReturner;
+import android.friendr.integration.InterestAndGroupDAO;
 import android.friendr.view.viewObject.Interests;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,7 @@ import java.util.HashSet;
 public class FindNewInterest extends AppCompatActivity {
 
     SearchView searchView;
-    Controller controller = new Controller();
+    InterestAndGroupDAO interestAndGroupDAO = new InterestAndGroupDAO();
     String currentUserID;
     HashSet<String> interestNamesForUser;
 
@@ -35,9 +36,13 @@ public class FindNewInterest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_new_interest);
 
+        SharedPreferences settings = getSharedPreferences("MyApp_Settings", MODE_PRIVATE);
+
+        currentUserID = settings.getString("currentUserID", "");
+
         Intent intent = getIntent();
         if (null != intent) {
-            currentUserID = (String) intent.getSerializableExtra("currentUserID");
+            currentUserID = intent.getStringExtra("currentUserID");
             interestNamesForUser = (HashSet<String>) intent.getSerializableExtra("interestNamesForUser");
         }
 
@@ -50,7 +55,7 @@ public class FindNewInterest extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 String searchText = searchView.getQuery().toString();
-                controller.addInterest(searchText, currentUserID);
+                interestAndGroupDAO.addInterest(searchText, currentUserID);
                 Intent nextWindow = new Intent(FindNewInterest.this, Index.class);
                 startActivity(nextWindow);
             }
@@ -69,7 +74,7 @@ public class FindNewInterest extends AppCompatActivity {
                 if(!searchText.isEmpty()) {
                     FirebaseAuth mAuth = FirebaseAuth.getInstance();
                     final String currentUserID = mAuth.getCurrentUser().getUid();
-                    controller.getInterestSearchResult(new DatabaseReturner() {
+                    interestAndGroupDAO.getInterestSearchResult(new DatabaseReturner() {
 
                         @Override
                         public void returner(DataSnapshot dataSnapshot) {
@@ -100,7 +105,7 @@ public class FindNewInterest extends AppCompatActivity {
                                     addInterest.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            controller.addUserInterest(interestName, currentUserID);
+                                            interestAndGroupDAO.addUserInterest(interestName, currentUserID);
                                             Intent nextWindow = new Intent(FindNewInterest.this, Index.class);
                                             startActivity(nextWindow);
                                         }
