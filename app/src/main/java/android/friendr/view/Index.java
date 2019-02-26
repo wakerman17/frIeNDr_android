@@ -38,12 +38,6 @@ public class Index extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
-        SharedPreferences settings = getSharedPreferences("MyApp_Settings", MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString("currentUserID", currentUserID);
-        editor.commit();
-
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
 
