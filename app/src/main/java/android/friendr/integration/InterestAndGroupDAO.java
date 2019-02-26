@@ -145,12 +145,10 @@ public class InterestAndGroupDAO implements Serializable {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                databaseReturner.returner(dataSnapshot);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                databaseReturner.returner(dataSnapshot);
             }
 
             @Override
@@ -205,12 +203,10 @@ public class InterestAndGroupDAO implements Serializable {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                databaseReturner.returner(dataSnapshot);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                databaseReturner.returner(dataSnapshot);
             }
 
             @Override

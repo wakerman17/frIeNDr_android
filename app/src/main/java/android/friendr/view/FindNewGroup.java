@@ -96,7 +96,7 @@ public class FindNewGroup extends AppCompatActivity {
                         public void returner(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getValue() != null) {
                                 LinearLayout parentLinearLayout = findViewById(R.id.group_result);
-                                final ProgressBar progressBar = findViewById(R.id.progress_bar);
+                                //final ProgressBar progressBar = findViewById(R.id.progress_bar);
                                 parentLinearLayout.setVisibility(View.VISIBLE);
                                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                 int i = 0;
@@ -123,7 +123,7 @@ public class FindNewGroup extends AppCompatActivity {
                                     if (result != null) {
                                         result.removeAllViews();
                                     }
-                                    parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount() - 1);
+                                    parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount());
 
                                     TextView groupName = parentLinearLayout.findViewById(R.id.group_name_fragment);
 
@@ -146,7 +146,7 @@ public class FindNewGroup extends AppCompatActivity {
                                     linearLayoutArrayList.add(linearLayout);
                                     i++;
                                 }
-                                progressBar.setVisibility(View.GONE);
+                                //progressBar.setVisibility(View.GONE);
                             } else {
                                 Log.d("d::::", "else");
                                 LinearLayout parentLinearLayout = findViewById(R.id.group_result);
@@ -154,6 +154,7 @@ public class FindNewGroup extends AppCompatActivity {
                                 if (result != null) {
                                     parentLinearLayout.removeView(result);
                                 }
+                                parentLinearLayout.setVisibility(View.VISIBLE);
                             }
                         }
                     }, currentUserID, searchText);

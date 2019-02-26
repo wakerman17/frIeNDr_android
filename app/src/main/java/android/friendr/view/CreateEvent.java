@@ -91,8 +91,10 @@ public class CreateEvent extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+                            DatabaseReference databaseUser = eventRef.child("attendees").push();
+                            String postId = databaseUser.getKey();
                             HashMap<String, Object> attendingUser = new HashMap<>();
-                            attendingUser.put("name", currentUserID);
+                            attendingUser.put(postId, currentUserID);
                             eventRef.child("attendees").setValue(attendingUser); //.updateChildren(attendingUser);
                             Toast.makeText(CreateEvent.this, txt_title + " event created!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CreateEvent.this, EventList.class);

@@ -67,6 +67,7 @@ public class Index extends AppCompatActivity {
                     public void onClick(View arg0) {
                         Intent nextWindow = new Intent(Index.this, FindNewInterest.class);
                         nextWindow.putExtra("interestNamesForUser", interestNamesForUser);
+                        nextWindow.putExtra("currentUserID", currentUserID);
                         startActivity(nextWindow);
                     }
                 });

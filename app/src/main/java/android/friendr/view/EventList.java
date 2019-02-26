@@ -32,7 +32,7 @@ public class EventList extends AppCompatActivity {
     Button btnCreateEvent;
     LinearLayout eventListView;
 
-    DatabaseReference EventRef;
+    DatabaseReference eventRef;
     InterestAndGroupDAO interestAndGroupDAO = new InterestAndGroupDAO();
 
 
@@ -47,7 +47,7 @@ public class EventList extends AppCompatActivity {
         }
 
         currentGroupName = getIntent().getExtras().get("groupName").toString();
-        EventRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Events");
+        eventRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Events");
 
         initFields();
         getEvents();
@@ -147,12 +147,12 @@ public class EventList extends AppCompatActivity {
 
 
     private void addAttendee(final String currentEventName, String dbRef) {
+        DatabaseReference databaseUser = eventRef.child(dbRef).child("attendees").push();
+        String postId = databaseUser.getKey();
         HashMap<String, Object> attendingUser = new HashMap<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        attendingUser.put("name", currentUserID);
-
-
-        EventRef.child(dbRef).child("attendees").updateChildren(attendingUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+        attendingUser.put(postId, currentUserID);
+        eventRef.child(dbRef).child("attendees").updateChildren(attendingUser).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
