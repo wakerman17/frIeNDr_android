@@ -87,9 +87,14 @@ public class EventList extends AppCompatActivity {
 
         while (iterator.hasNext()) {
             DataSnapshot attendees = (DataSnapshot) iterator.next();
-            HashSet<String> attendeeIDs = new HashSet<>();
+            //HashSet<String> attendeeIDs = new HashSet<>();
+            boolean alreadyAttended = false;
             for(DataSnapshot attendee : attendees.getChildren()) {
-                attendeeIDs.add((String) attendee.getValue());
+                if(attendee.getValue().equals(currentUserID)) {
+                    alreadyAttended = true;
+                    break;
+                    //attendeeIDs.add((String) attendee.getValue());
+                }
             }
             final String evAtt = (String) ""+ attendees.getChildrenCount();
             final String evDate = (String) ((DataSnapshot) iterator.next()).getValue();
@@ -98,7 +103,7 @@ public class EventList extends AppCompatActivity {
             final String evMax = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evTitle = (String) ((DataSnapshot) iterator.next()).getValue();
             String dbRef = evDate.replace("/", "") + evTitle;
-            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax, dbRef, attendeeIDs);
+            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax, dbRef, alreadyAttended);
 
             myEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,7 +119,7 @@ public class EventList extends AppCompatActivity {
         }
     }
 
-    public RelativeLayout displayEvent(String date, final String title, String desc, String att, String max, final String dbRef, HashSet<String> attendeeIDs) {
+    public RelativeLayout displayEvent(String date, final String title, String desc, String att, String max, final String dbRef, boolean alreadyAttended) {
         RelativeLayout my_event = (RelativeLayout) LayoutInflater.from(EventList.this).inflate(R.layout.event, null);
         Button btn_join = new Button(my_event.getContext());
         btn_join.setText("Join");
@@ -125,7 +130,7 @@ public class EventList extends AppCompatActivity {
         ev_date.setText(date);
         ev_title.setText(title);
         ev_max.setText(att + "/" + max);
-        if(!attendeeIDs.contains(currentUserID)) {
+        if(!alreadyAttended) {
             ll.addView(btn_join);
 
             btn_join.setOnClickListener(new View.OnClickListener() {
