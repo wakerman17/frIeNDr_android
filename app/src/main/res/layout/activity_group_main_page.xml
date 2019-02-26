@@ -35,10 +35,10 @@
             android:id="@+id/create_event_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/add_new_event" />
+            android:text="@string/create_a_new_event" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/to_general_chat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="toGroup"
@@ -66,58 +66,11 @@
             android:text="@string/events"
             android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mobile LAN"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6:th March"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Attending 2/5" />
-
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/gr_to_live_events"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/join_event" />
-
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mobile meeting"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="10:th March"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Attending 3/5" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="toEvent"
-            android:text="@string/join_event" />
+            android:text="@string/to_live_events" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

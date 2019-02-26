@@ -2,9 +2,10 @@ package android.friendr.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.friendr.controller.Controller;
+import android.content.SharedPreferences;
 import android.friendr.R;
 import android.friendr.integration.DatabaseReturner;
+import android.friendr.integration.InterestAndGroupDAO;
 import android.friendr.view.viewObject.Group;
 import android.friendr.view.viewObject.InterestProfile;
 import android.support.annotation.IdRes;
@@ -30,17 +31,23 @@ public class Index extends AppCompatActivity {
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
     String currentUserID;
     HashSet<String> interestNamesForUser = new HashSet<>();
+    InterestAndGroupDAO interestAndGroupDAO = new InterestAndGroupDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
+        SharedPreferences settings = getSharedPreferences("MyApp_Settings", MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("currentUserID", currentUserID);
+        editor.commit();
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
 
-        Controller controller = new Controller();
-        controller.getUserInterest(new DatabaseReturner() {
+        interestAndGroupDAO.getUserInterest(new DatabaseReturner() {
 
             @Override
             public void returner(final DataSnapshot dataSnapshot) {
@@ -48,8 +55,6 @@ public class Index extends AppCompatActivity {
                 LinearLayout parentLinearLayout = findViewById(R.id.parent_linear_layout_interest);
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                //final String[] interestNamesForUser = new String[(int) dataSnapshot.getChildrenCount()];
-                //final ArrayList<String> interestNamesForUser = new ArrayList<>();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     View rowView = inflater.inflate(R.layout.fragment_interests, null, false);
                     InterestProfile interestProfile = postSnapshot.getValue(InterestProfile.class);
@@ -67,7 +72,6 @@ public class Index extends AppCompatActivity {
                     @Override
                     public void onClick(View arg0) {
                         Intent nextWindow = new Intent(Index.this, FindNewInterest.class);
-                        nextWindow.putExtra("currentUserID", currentUserID);
                         nextWindow.putExtra("interestNamesForUser", interestNamesForUser);
                         startActivity(nextWindow);
                     }
@@ -76,7 +80,7 @@ public class Index extends AppCompatActivity {
         }, currentUserID);
 
         startClickListener(R.id.add_interests, FindNewInterest.class);
-        controller.getUserGroup(new DatabaseReturner() {
+        interestAndGroupDAO.getUserGroup(new DatabaseReturner() {
 
             @Override
             public void returner(DataSnapshot dataSnapshot) {
@@ -105,7 +109,9 @@ public class Index extends AppCompatActivity {
                         @Override
                         public void onClick(View arg0) {
                             Intent nextWindow = new Intent(Index.this, GroupMainPage.class);
+                            nextWindow.putExtra("currentUserID", currentUserID);
                             nextWindow.putExtra("group", group);
+
                             startActivity(nextWindow);
                         }
                     });

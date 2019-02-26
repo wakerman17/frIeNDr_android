@@ -51,6 +51,8 @@
     <string name="go_to_general_chat">Go to general chat</string>
     <string name="result">Result</string>
     <string name="add">Add</string>
+    <string name="to_live_events">To Live Events</string>
+    <string name="create_a_new_event">Create a new event</string>
 
     <string-array name="interests_array">
         <item>Mobile</item>

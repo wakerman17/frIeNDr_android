@@ -2,6 +2,7 @@ package android.friendr.view;
 
 import android.content.Intent;
 import android.friendr.R;
+import android.friendr.integration.InterestAndGroupDAO;
 import android.friendr.view.viewObject.Event;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -39,8 +40,11 @@ public class CreateEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        currentGroupName = getIntent().getExtras().get("groupName").toString();
-
+        Intent intent = getIntent();
+        if (null != intent) {
+            currentGroupName = intent.getExtras().get("groupName").toString();
+            currentUserID = intent.getStringExtra("currentUserID");
+        }
         date = new MyEditTextDatePicker(this, R.id.ev_date);
         titleInput = findViewById(R.id.ev_title);
         locationInput = findViewById(R.id.ev_location);
@@ -49,10 +53,7 @@ public class CreateEvent extends AppCompatActivity {
         btnCreateEvent = findViewById(R.id.ev_save_button);
 
 
-        mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
-        EventRef = FirebaseDatabase.getInstance().getReference().child("Events");
 
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +97,7 @@ public class CreateEvent extends AppCompatActivity {
                             Toast.makeText(CreateEvent.this, txt_title + " event created!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(CreateEvent.this, EventList.class);
                             intent.putExtra("groupName", currentGroupName);
+                            intent.putExtra("currentUserID", currentUserID);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();

@@ -10,19 +10,24 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class GroupMainPage extends AppCompatActivity {
+    String groupNameString;
+    String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_main_page);
 
-        TextView groupName = findViewById(R.id.group_name);
+        final TextView groupName = findViewById(R.id.group_name);
         TextView groupDescription = findViewById(R.id.group_description);
+
 
         Intent intent = getIntent();
         if (null != intent) {
+            currentUserID = intent.getStringExtra("currentUserID");
             Group group = (Group) intent.getSerializableExtra("group");
-            groupName.setText(group.getName());
+            groupNameString = group.getName();
+            groupName.setText(groupNameString);
             groupDescription.setText(group.getDescription());
         }
 
@@ -32,7 +37,30 @@ public class GroupMainPage extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 Intent nextWindow = new Intent(GroupMainPage.this, CreateEvent.class);
+                nextWindow.putExtra("groupName", groupNameString);
                 startActivity(nextWindow);
+            }
+        });
+
+        Button buttonGeneralChat = findViewById(R.id.to_general_chat);
+        buttonGeneralChat.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent nextWindow = new Intent(GroupMainPage.this, GroupChat.class);
+                nextWindow.putExtra("currentUserID", currentUserID);
+                nextWindow.putExtra("groupNamesForUser", groupNameString);
+                startActivity(nextWindow);
+            }
+        });
+        Button btnToLiveEvents = findViewById(R.id.gr_to_live_events);
+        btnToLiveEvents.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(GroupMainPage.this, EventList.class);
+                intent.putExtra("groupName", groupNameString);
+                startActivity(intent);
             }
         });
     }
@@ -41,10 +69,4 @@ public class GroupMainPage extends AppCompatActivity {
         Intent eventIntent = new Intent(this, GroupChat.class);
         startActivity(eventIntent);
     }
-
-    public void toEvent(View view) {
-        Intent eventIntent = new Intent(this, EventChat.class);
-        startActivity(eventIntent);
-    }
-
 }

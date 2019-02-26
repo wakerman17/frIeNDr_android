@@ -1,11 +1,11 @@
 package android.friendr.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.friendr.R;
+import android.friendr.integration.DatabaseReturner;
+import android.friendr.integration.InterestAndGroupDAO;
 import android.friendr.view.viewObject.Event;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,27 +19,32 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class EventList extends AppCompatActivity {
-    String currentGroupName;
+    String currentGroupName, currentUserID;
     Button btnCreateEvent;
     LinearLayout eventListView;
 
     DatabaseReference EventRef;
+    InterestAndGroupDAO interestAndGroupDAO = new InterestAndGroupDAO();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_list);
+
+        Intent intent = getIntent();
+        if (null != intent) {
+            currentUserID = intent.getStringExtra("currentUserID");
+        }
 
         currentGroupName = getIntent().getExtras().get("groupName").toString();
         EventRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(currentGroupName).child("Events");
@@ -53,6 +58,7 @@ public class EventList extends AppCompatActivity {
             public void onClick(View arg0) {
                 Intent nextWindow = new Intent(EventList.this, CreateEvent.class);
                 nextWindow.putExtra("groupName", currentGroupName);
+                nextWindow.putExtra("currentUserID", currentUserID);
                 startActivity(nextWindow);
             }
         });
@@ -60,37 +66,14 @@ public class EventList extends AppCompatActivity {
     }
 
     protected void getEvents() {
-
-        EventRef.addChildEventListener(new ChildEventListener() {
+        interestAndGroupDAO.getEvents(new DatabaseReturner(){
             @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            public void returner(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     displayAllEvents(dataSnapshot);
                 }
             }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.exists()) {
-                    displayAllEvents(dataSnapshot);
-                }
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        }, currentGroupName);
     }
 
 
@@ -103,36 +86,35 @@ public class EventList extends AppCompatActivity {
         Iterator iterator = dataSnapshot.getChildren().iterator();
 
         while (iterator.hasNext()) {
-            final String evAtt = (String) ""+ ((DataSnapshot) iterator.next()).getChildrenCount();
+            DataSnapshot attendees = (DataSnapshot) iterator.next();
+            HashSet<String> attendeeIDs = new HashSet<>();
+            for(DataSnapshot attendee : attendees.getChildren()) {
+                attendeeIDs.add((String) attendee.getValue());
+            }
+            final String evAtt = (String) ""+ attendees.getChildrenCount();
             final String evDate = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evDesc = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evLoc = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evMax = (String) ((DataSnapshot) iterator.next()).getValue();
             final String evTitle = (String) ((DataSnapshot) iterator.next()).getValue();
             String dbRef = evDate.replace("/", "") + evTitle;
-            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax, dbRef);
+            RelativeLayout myEvent = displayEvent(evDate, evTitle, evDesc, evAtt, evMax, dbRef, attendeeIDs);
 
             myEvent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(EventList.this,EventChat.class);
+                    Event event = new Event(evAtt, evDate, evDesc, evLoc, evMax, evTitle, currentGroupName);
+                    intent.putExtra("event",event);
                     intent.putExtra("dbRef", evDate.replace("/", "") + evTitle);
-                    intent.putExtra("eventName", evTitle);
-                    intent.putExtra("eventDate", evDate);
-                    intent.putExtra("eventDesc", evDesc);
-                    intent.putExtra("eventLoc", evLoc);
-                    intent.putExtra("eventAtt", evAtt);
-                    intent.putExtra("eventMax", evMax);
-                    intent.putExtra("groupName", currentGroupName);
                     startActivity(intent);
                 }
             });
-
             eventListView.addView(myEvent);
         }
     }
 
-    public RelativeLayout displayEvent(String date, final String title, String desc, String att, String max, final String dbRef) {
+    public RelativeLayout displayEvent(String date, final String title, String desc, String att, String max, final String dbRef, HashSet<String> attendeeIDs) {
         RelativeLayout my_event = (RelativeLayout) LayoutInflater.from(EventList.this).inflate(R.layout.event, null);
         Button btn_join = new Button(my_event.getContext());
         btn_join.setText("Join");
@@ -143,41 +125,39 @@ public class EventList extends AppCompatActivity {
         ev_date.setText(date);
         ev_title.setText(title);
         ev_max.setText(att + "/" + max);
-        ll.addView(btn_join);
+        if(!attendeeIDs.contains(currentUserID)) {
+            ll.addView(btn_join);
 
-        btn_join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RelativeLayout event = (RelativeLayout) view.getParent().getParent();
-                LinearLayout parentLinearLayout = findViewById(R.id.ev_list_view);
-                event.removeAllViews();
-                addEvent(title, dbRef);
-            }
-        });
+            btn_join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    RelativeLayout event = (RelativeLayout) view.getParent().getParent();
+                    LinearLayout parentLinearLayout = findViewById(R.id.ev_list_view);
+                    event.removeAllViews();
+                    addAttendee(title, dbRef);
+                }
+            });
+        }
 
         return my_event;
     }
 
 
-    private void addEvent(final String currentEventName, String dbRef) {
+    private void addAttendee(final String currentEventName, String dbRef) {
         HashMap<String, Object> attendingUser = new HashMap<>();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserID = mAuth.getCurrentUser().getUid();
-        attendingUser.put(currentUserID, "true");
+        attendingUser.put("name", currentUserID);
 
 
-        EventRef.child(dbRef).child("attendees").updateChildren(attendingUser)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(EventList.this, "Joined " + currentEventName + "!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(EventList.this, "Something went wrong! Try again!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
+        EventRef.child(dbRef).child("attendees").updateChildren(attendingUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(EventList.this, "Joined " + currentEventName + "!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(EventList.this, "Something went wrong! Try again!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

@@ -11,16 +11,18 @@ public class Event implements Serializable {
     private String location;
     private String max;
     private String title;
+    private String groupName;
 
     public Event() {}
 
-    public Event(String attendees, String date, String description, String location, String max, String title) {
+    public Event(String attendees, String date, String description, String location, String max, String title, String groupName) {
         this.attendees = attendees;
         this.date = date;
         this.description = description;
         this.location = location;
         this.max = max;
         this.title = title;
+        this.groupName = groupName;
     }
 
     public void setAttendees(String attendees) {
@@ -49,5 +51,9 @@ public class Event implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 }

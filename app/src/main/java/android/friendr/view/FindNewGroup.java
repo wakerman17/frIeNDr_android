@@ -3,10 +3,9 @@ package android.friendr.view;
 import android.content.Context;
 import android.content.Intent;
 import android.friendr.R;
-import android.friendr.controller.Controller;
 import android.friendr.integration.DatabaseReturner;
+import android.friendr.integration.InterestAndGroupDAO;
 import android.friendr.view.viewObject.Group;
-import android.friendr.view.viewObject.Interests;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class FindNewGroup extends AppCompatActivity {
     TextView min_members_txt, max_members_txt;
     EditText min_members, max_members;
     Button searchGroup, createNewGroup;
-    Controller controller = new Controller();
+    InterestAndGroupDAO interestAndGroupDAO = new InterestAndGroupDAO();
     Spinner spinner;
     SearchView searchView;
     ArrayList<LinearLayout> linearLayoutArrayList = new ArrayList<>();
@@ -48,7 +46,7 @@ public class FindNewGroup extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (null != intent) {
-            currentUserID = (String) intent.getSerializableExtra("currentUserID");
+            currentUserID = intent.getStringExtra("currentUserID");
             groupNamesForUser = (HashSet<String>) intent.getSerializableExtra("groupNamesForUser");
             interestNamesForUser = (HashSet<String>) intent.getSerializableExtra("interestNamesForUser");
         }
@@ -60,7 +58,7 @@ public class FindNewGroup extends AppCompatActivity {
         searchView = findViewById(R.id.search_group);
 
         spinner = findViewById(R.id.interest_spinner);
-        controller.getAllInterests(new DatabaseReturner(){
+        interestAndGroupDAO.getAllInterests(new DatabaseReturner(){
 
             @Override
             public void returner(DataSnapshot dataSnapshot) {
@@ -70,7 +68,6 @@ public class FindNewGroup extends AppCompatActivity {
                     final Group group = postSnapshot.getValue(Group.class);
                     groupNameList.add(group.getName());
                 }
-                //final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>();
                 final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(FindNewGroup.this, R.layout.spinner_item, groupNameList);
 
                 spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
@@ -93,14 +90,12 @@ public class FindNewGroup extends AppCompatActivity {
             public void onClick(View arg0) {
                 String searchText = searchView.getQuery().toString();
                 if (!searchText.equals("")) {
-                    controller.getGroupSearchResult(new DatabaseReturner() {
+                    interestAndGroupDAO.getGroupSearchResult(new DatabaseReturner() {
 
                         @Override
                         public void returner(DataSnapshot dataSnapshot) {
-                            //controller.getInterestSearchResult();
                             if (dataSnapshot.getValue() != null) {
                                 LinearLayout parentLinearLayout = findViewById(R.id.group_result);
-                                //parentLinearLayout.removeAllViews();
                                 final ProgressBar progressBar = findViewById(R.id.progress_bar);
                                 parentLinearLayout.setVisibility(View.VISIBLE);
                                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -142,7 +137,7 @@ public class FindNewGroup extends AppCompatActivity {
 
                                         @Override
                                         public void onClick(View v) {
-                                            controller.addUserGroup(group.getName(), group.getDescription(), group.getInterest_base(), currentUserID);
+                                            interestAndGroupDAO.addUserGroup(group.getName(), group.getDescription(), group.getInterest_base(), currentUserID);
                                             Intent nextWindow = new Intent(FindNewGroup.this, Index.class);
                                             startActivity(nextWindow);
                                         }
