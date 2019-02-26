@@ -87,13 +87,11 @@ public class EventList extends AppCompatActivity {
 
         while (iterator.hasNext()) {
             DataSnapshot attendees = (DataSnapshot) iterator.next();
-            //HashSet<String> attendeeIDs = new HashSet<>();
             boolean alreadyAttended = false;
             for(DataSnapshot attendee : attendees.getChildren()) {
                 if(attendee.getValue().equals(currentUserID)) {
                     alreadyAttended = true;
                     break;
-                    //attendeeIDs.add((String) attendee.getValue());
                 }
             }
             final String evAtt = (String) ""+ attendees.getChildrenCount();
