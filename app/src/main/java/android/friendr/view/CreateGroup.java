@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.friendr.R;
 import android.friendr.integration.DatabaseReturner;
 import android.friendr.integration.InterestAndGroupDAO;
-import android.friendr.view.viewObject.Group;
+import android.friendr.view.viewObject.InterestProfile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,12 +16,14 @@ import android.widget.Spinner;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CreateGroup extends AppCompatActivity {
 
     EditText groupNameET, groupDescriptionET;
     String currentUserID;
     InterestAndGroupDAO interestAndGroupDAO = new InterestAndGroupDAO();
+    HashSet<String> interestNamesForUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,27 +34,25 @@ public class CreateGroup extends AppCompatActivity {
         Intent intent = getIntent();
         if (null != intent) {
             currentUserID = (String) intent.getSerializableExtra("currentUserID");
+            interestNamesForUser = (HashSet<String>) intent.getSerializableExtra("interestNamesForUser");
         }
         groupNameET = findViewById(R.id.group_name);
         groupDescriptionET = findViewById(R.id.group_description);
 
         final Spinner spinner = findViewById(R.id.interest_spinner);
-        interestAndGroupDAO.getAllInterests(new DatabaseReturner(){
+        interestAndGroupDAO.getUserInterest(new DatabaseReturner(){
 
             @Override
             public void returner(DataSnapshot dataSnapshot) {
-                final ArrayList<String> groupNameList = new ArrayList<>();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    final Group group = postSnapshot.getValue(Group.class);
-                    groupNameList.add(group.getName());
-                }
-                //final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>();
-                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateGroup.this, R.layout.spinner_item, groupNameList);
+                final ArrayList<String> interestList = new ArrayList<>();
+                interestList.add("");
+                interestList.addAll(interestNamesForUser);
+                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CreateGroup.this, R.layout.spinner_item, interestList);
 
                 spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 spinner.setAdapter(spinnerArrayAdapter);
             }
-        });
+        }, currentUserID);
 
         Button find_new_group = findViewById(R.id.find_new_group);
         find_new_group.setOnClickListener(new View.OnClickListener() {

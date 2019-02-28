@@ -2,7 +2,6 @@ package android.friendr.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.friendr.R;
 import android.friendr.integration.DatabaseReturner;
 import android.friendr.integration.InterestAndGroupDAO;

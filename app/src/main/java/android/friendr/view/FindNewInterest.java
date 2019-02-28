@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.friendr.R;
 import android.friendr.integration.DatabaseReturner;
 import android.friendr.integration.InterestAndGroupDAO;
-import android.friendr.view.viewObject.Interests;
+import android.friendr.view.viewObject.Interest;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class FindNewInterest extends AppCompatActivity {
@@ -92,7 +91,7 @@ public class FindNewInterest extends AppCompatActivity {
 
                                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                     View rowView = inflater.inflate(R.layout.fragment_new_interests, null, false);
-                                    Interests interestProfile = postSnapshot.getValue(Interests.class);
+                                    Interest interestProfile = postSnapshot.getValue(Interest.class);
                                     if(interestNamesForUser.contains(interestProfile.getName())) {
                                         continue;
                                     }

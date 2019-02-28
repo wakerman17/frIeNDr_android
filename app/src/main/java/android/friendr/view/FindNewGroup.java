@@ -6,6 +6,7 @@ import android.friendr.R;
 import android.friendr.integration.DatabaseReturner;
 import android.friendr.integration.InterestAndGroupDAO;
 import android.friendr.view.viewObject.Group;
+import android.friendr.view.viewObject.InterestProfile;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -58,22 +58,19 @@ public class FindNewGroup extends AppCompatActivity {
         searchView = findViewById(R.id.search_group);
 
         spinner = findViewById(R.id.interest_spinner);
-        interestAndGroupDAO.getAllInterests(new DatabaseReturner(){
+        interestAndGroupDAO.getUserInterest(new DatabaseReturner(){
 
             @Override
             public void returner(DataSnapshot dataSnapshot) {
-                final ArrayList<String> groupNameList = new ArrayList<>();
-                groupNameList.add("");
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    final Group group = postSnapshot.getValue(Group.class);
-                    groupNameList.add(group.getName());
-                }
-                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(FindNewGroup.this, R.layout.spinner_item, groupNameList);
+                final ArrayList<String> interestList = new ArrayList<>();
+                interestList.add("");
+                interestList.addAll(interestNamesForUser);
+                final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(FindNewGroup.this, R.layout.spinner_item, interestList);
 
                 spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
                 spinner.setAdapter(spinnerArrayAdapter);
             }
-        });
+        }, currentUserID);
 
         createNewGroup.setOnClickListener(new View.OnClickListener() {
 
@@ -81,6 +78,7 @@ public class FindNewGroup extends AppCompatActivity {
             public void onClick(View arg0) {
                 Intent nextWindow = new Intent(FindNewGroup.this, CreateGroup.class);
                 nextWindow.putExtra("currentUserID", currentUserID);
+                nextWindow.putExtra("interestNamesForUser", interestNamesForUser);
                 startActivity(nextWindow);
             }
         });
